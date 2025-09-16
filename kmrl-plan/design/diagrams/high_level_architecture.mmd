@@ -1,0 +1,171 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#ff6b6b',
+      'primaryTextColor': '#000000',
+      'primaryBorderColor': '#ff6b6b',
+      'lineColor': '#000000',
+      'sectionBkgColor': '#f8f9fa',
+      'altSectionBkgColor': '#e9ecef',
+      'gridColor': '#dee2e6',
+      'secondaryColor': '#4ecdc4',
+      'tertiaryColor': '#45b7d1',
+      'primaryTextColor': '#000000',
+      'secondaryTextColor': '#000000',
+      'tertiaryTextColor': '#000000',
+      'lineColor': '#000000',
+      'textColor': '#000000',
+      'mainBkg': '#ffffff',
+      'secondBkg': '#f8f9fa',
+      'tertiaryBkg': '#e9ecef'
+    }
+  }
+}%%
+
+%% KMRL Document Processing System - High Level Architecture
+%% Source: detailed_flow.md sections 1-7, flow.md phases 1-4, flow2.md steps 1-42
+%% Author: Systems Architect
+%% Date: 2024-12-19
+%% Purpose: One-page overview of complete KMRL document processing architecture
+
+graph TB
+    subgraph "Data Sources"
+        A1[Email Server]
+        A2[SharePoint]
+        A3[Maximo]
+        A4[WhatsApp Business]
+        A5[Manual Upload UI]
+    end
+    
+    subgraph "Connector Layer"
+        B1[Email Connector]
+        B2[SharePoint Connector]
+        B3[Maximo Connector]
+        B4[WhatsApp Connector]
+    end
+    
+    subgraph "API Gateway"
+        C[Document Upload API<br/>POST /api/v1/documents/upload]
+        C1[Authentication Service]
+        C2[File Validation Service]
+    end
+    
+    subgraph "Storage Layer"
+        D1[MinIO/S3<br/>Original Files]
+        D2[PostgreSQL<br/>Users, Chat History<br/>& File Metadata]
+        D3[Redis<br/>Queue & Cache]
+        D4[OpenSearch<br/>Document Chunks<br/>& Embeddings]
+    end
+    
+    subgraph "Processing Layer"
+        E1[Document Processing Workers<br/>Celery + Redis]
+        E2[File Type Detection]
+        E3[Quality Assessment]
+        E4[Text Extraction<br/>Markitdown]
+        E5[OCR Processing<br/>Tesseract]
+        E6[Image Enhancement]
+        E7[CAD Processing]
+    end
+    
+    subgraph "RAG Pipeline"
+        F1[Data Preprocessing]
+        F2[Smart Chunking]
+        F3[Embedding Generation<br/>OpenAI/All-MiniLM]
+    end
+    
+    subgraph "Intelligence Layer"
+        G1[Notification Scanner<br/>Vector Similarity]
+        G2[Trigger Embeddings<br/>Pre-computed]
+        G3[Smart Notifications<br/>Email/SMS/Slack]
+        G4[RAG Query Engine]
+        G5[LLM Response Generator<br/>Gemini/OpenAI]
+    end
+    
+    subgraph "User Interfaces"
+        H1[Department Dashboards<br/>Role-based Views]
+        H2[Intelligent Search<br/>RAG-powered]
+        H3[Chat Interface<br/>Conversational AI]
+        H4[Mobile App<br/>Field Workers]
+        H5[Analytics Dashboard]
+    end
+    
+    subgraph "External Systems"
+        I1[Maximo Integration]
+        I2[Finance System Sync]
+        I3[Email System]
+        I4[Third-party APIs]
+    end
+    
+    %% Data Flow Connections
+    A1 --> B1
+    A2 --> B2
+    A3 --> B3
+    A4 --> B4
+    A5 --> C
+    
+    B1 --> C
+    B2 --> C
+    B3 --> C
+    B4 --> C
+    
+    C --> C1
+    C --> C2
+    C2 --> D1
+    C2 --> D2
+    C2 --> D3
+    
+    D3 --> E1
+    E1 --> E2
+    E2 --> E3
+    E3 --> E4
+    E3 --> E5
+    E3 --> E6
+    E3 --> E7
+    
+    E4 --> F1
+    E5 --> F1
+    E6 --> F1
+    E7 --> F1
+    
+    F1 --> F2
+    F2 --> F3
+    F3 --> D4
+    
+    D4 --> G1
+    D4 --> G4
+    G1 --> G2
+    G1 --> G3
+    G4 --> G5
+    
+    G3 --> H1
+    G4 --> H2
+    G5 --> H3
+    H1 --> H4
+    H1 --> H5
+    
+    G1 --> I1
+    G1 --> I2
+    G3 --> I3
+    H1 --> I4
+    
+    %% Styling
+    classDef dataSource fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef connector fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef api fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef storage fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef processing fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    classDef rag fill:#f1f8e9,stroke:#33691e,stroke-width:2px
+    classDef intelligence fill:#fff8e1,stroke:#f57f17,stroke-width:2px
+    classDef ui fill:#e3f2fd,stroke:#0d47a1,stroke-width:2px
+    classDef external fill:#fafafa,stroke:#424242,stroke-width:2px
+    
+    class A1,A2,A3,A4,A5 dataSource
+    class B1,B2,B3,B4 connector
+    class C,C1,C2 api
+    class D1,D2,D3,D4 storage
+    class E1,E2,E3,E4,E5,E6,E7 processing
+    class F1,F2,F3,F4 rag
+    class G1,G2,G3,G4,G5 intelligence
+    class H1,H2,H3,H4,H5 ui
+    class I1,I2,I3,I4 external

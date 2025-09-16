@@ -1,0 +1,163 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#ff6b6b',
+      'primaryTextColor': '#000000',
+      'primaryBorderColor': '#ff6b6b',
+      'lineColor': '#000000',
+      'sectionBkgColor': '#f8f9fa',
+      'altSectionBkgColor': '#e9ecef',
+      'gridColor': '#dee2e6',
+      'secondaryColor': '#4ecdc4',
+      'tertiaryColor': '#45b7d1',
+      'primaryTextColor': '#000000',
+      'secondaryTextColor': '#000000',
+      'tertiaryTextColor': '#000000',
+      'lineColor': '#000000',
+      'textColor': '#000000',
+      'mainBkg': '#ffffff',
+      'secondBkg': '#f8f9fa',
+      'tertiaryBkg': '#e9ecef'
+    }
+  }
+}%%
+
+%% KMRL Document Processing System - Entity Relationship Diagram
+%% Source: detailed_flow.md sections 1-7, flow.md phases 1-4, flow2.md steps 1-42
+%% Author: Systems Architect
+%% Date: 2024-12-19
+%% Purpose: Database schema for PostgreSQL metadata storage
+
+erDiagram
+    DOCUMENTS {
+        uuid id PK
+        string file_name
+        string file_path
+        string file_type
+        integer file_size
+        string source
+        string department
+        string priority
+        string status
+        text processed_text
+        string language
+        string processing_method
+        float confidence_score
+        float ocr_confidence
+        boolean rag_ready
+        boolean notification_scan_completed
+        timestamp created_at
+        timestamp updated_at
+        timestamp processed_at
+        uuid uploaded_by FK
+    }
+    
+    USERS {
+        uuid id PK
+        string username
+        string email
+        string role
+        string department
+        string permissions
+        boolean is_active
+        timestamp created_at
+        timestamp last_login
+    }
+    
+    HUMAN_REVIEW_TASKS {
+        uuid id PK
+        uuid document_id FK
+        string reason
+        float confidence
+        string status
+        string priority
+        uuid assigned_to FK
+        text reviewer_notes
+        timestamp created_at
+        timestamp completed_at
+    }
+    
+    DOCUMENT_REJECTIONS {
+        uuid id PK
+        uuid document_id FK
+        string reason
+        text issues
+        float confidence
+        timestamp created_at
+    }
+    
+    NOTIFICATIONS {
+        uuid id PK
+        uuid document_id FK
+        string category
+        string notification_type
+        string priority
+        text message
+        json recipients
+        float similarity_score
+        string status
+        timestamp sent_at
+        timestamp created_at
+    }
+    
+    NOTIFICATION_RULES {
+        uuid id PK
+        string name
+        string trigger_phrases
+        float similarity_threshold
+        json recipients
+        string priority
+        string notification_type
+        boolean is_active
+        timestamp created_at
+    }
+    
+    DOCUMENT_CHUNKS {
+        uuid id PK
+        uuid document_id FK
+        integer chunk_index
+        text chunk_text
+        json metadata
+        timestamp created_at
+    }
+    
+    USER_SESSIONS {
+        uuid id PK
+        uuid user_id FK
+        string session_token
+        json session_data
+        timestamp created_at
+        timestamp expires_at
+    }
+    
+    ANALYTICS_EVENTS {
+        uuid id PK
+        uuid user_id FK
+        string event_type
+        json event_data
+        timestamp created_at
+    }
+    
+    EXTERNAL_INTEGRATIONS {
+        uuid id PK
+        string integration_type
+        string external_system
+        json configuration
+        string status
+        timestamp last_sync
+        timestamp created_at
+    }
+    
+    %% Relationships
+    DOCUMENTS ||--o{ HUMAN_REVIEW_TASKS : "requires review"
+    DOCUMENTS ||--o{ DOCUMENT_REJECTIONS : "rejected"
+    DOCUMENTS ||--o{ NOTIFICATIONS : "triggers"
+    DOCUMENTS ||--o{ DOCUMENT_CHUNKS : "contains"
+    DOCUMENTS }o--|| USERS : "uploaded by"
+    
+    USERS ||--o{ HUMAN_REVIEW_TASKS : "assigned to"
+    USERS ||--o{ USER_SESSIONS : "has"
+    USERS ||--o{ ANALYTICS_EVENTS : "performs"
+    
+    NOTIFICATION_RULES ||--o{ NOTIFICATIONS : "generates"

@@ -1,0 +1,80 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#ff6b6b',
+      'primaryTextColor': '#000000',
+      'primaryBorderColor': '#ff6b6b',
+      'lineColor': '#4a90e2',
+      'sectionBkgColor': '#f8f9fa',
+      'altSectionBkgColor': '#e9ecef',
+      'gridColor': '#dee2e6',
+      'secondaryColor': '#4ecdc4',
+      'tertiaryColor': '#45b7d1',
+      'primaryTextColor': '#000000',
+      'secondaryTextColor': '#000000',
+      'tertiaryTextColor': '#000000',
+      'lineColor': '#4a90e2',
+      'textColor': '#000000',
+      'mainBkg': '#ffffff',
+      'secondBkg': '#f8f9fa',
+      'tertiaryBkg': '#e9ecef',
+      'arrowTextColor': '#4a90e2',
+      'arrowLineColor': '#4a90e2'
+    }
+  }
+}%%
+
+%% KMRL RAG Pipeline Sequence Diagram
+%% Source: detailed_flow.md sections 18-22, flow.md phase 3, flow2.md steps 20-24
+%% Author: Systems Architect
+%% Date: 2024-12-19
+%% Purpose: RAG pipeline preparation from processed text to vector database
+
+sequenceDiagram
+    participant PG as PostgreSQL Database
+    participant PREP as Data Preprocessing Service
+    participant CHUNK as Smart Chunking Service
+    participant EMBED as Embedding Generation Service
+    participant OPENAI as OpenAI API
+    participant VECTOR as Vector Storage Service
+    participant OS as OpenSearch Vector DB
+    
+    Note over PG,OS: Phase 3: RAG Pipeline Preparation (detailed_flow.md sections 18-22)
+    
+    %% Trigger RAG Pipeline
+    PG->>PREP: 1. Processed Document Ready
+    Note over PREP: Document marked as processed<br/>Text extraction completed<br/>Quality validation passed
+    
+    %% Data Preprocessing
+    PREP->>PREP: 2. Clean Text Data
+    Note over PREP: Remove duplicates<br/>Fix OCR errors<br/>Standardize format<br/>Remove noise characters
+    
+    PREP->>CHUNK: 3. Create Smart Chunks
+    Note over CHUNK: Maintenance documents → Section-based chunks<br/>Incident reports → Event-based chunks<br/>Financial docs → Table-based chunks<br/>General docs → Paragraph-based chunks
+    
+    CHUNK-->>PREP: 4. Text Chunks
+    
+    %% Embedding Generation
+    PREP->>EMBED: 5. Generate Embeddings
+    EMBED->>OPENAI: 6. Request Embeddings
+    Note over OPENAI: OpenAI text-embedding-3-large<br/>or all-MiniLM-L6-v2<br/>Batch processing<br/>Error handling
+    OPENAI-->>EMBED: 7. Vector Embeddings
+    
+    EMBED-->>PREP: 8. Embeddings Data
+    
+    %% Vector Storage
+    PREP->>VECTOR: 9. Store in Vector Database
+    VECTOR->>OS: 10. Index Embeddings
+    Note over OS: OpenSearch index<br/>Metadata association<br/>Chunk relationships<br/>HNSW algorithm
+    OS-->>VECTOR: 11. Index Success
+    
+    VECTOR-->>PREP: 12. Storage Success
+    
+    %% Mark as RAG Ready
+    PREP->>PG: 13. Mark Document as RAG Ready
+    Note over PG: Update document status<br/>Set RAG ready flag<br/>Store chunk metadata<br/>Update processing timestamp
+    PG-->>PREP: 14. Status Updated
+    
+    %% Pipeline Complete
+    Note over PREP,OS: Document ready for<br/>RAG queries and<br/>notification scanning

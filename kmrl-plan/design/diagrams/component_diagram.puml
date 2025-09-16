@@ -1,0 +1,145 @@
+@startuml component_diagram
+!theme plain
+title KMRL Document Processing System - Component Diagram
+note top
+Source: detailed_flow.md sections 1-7, flow.md phases 1-4, flow2.md steps 1-42
+Author: Systems Architect
+Date: 2024-12-19
+Purpose: Component relationships and responsibilities
+end note
+
+package "Data Sources" {
+  [Email Server]
+  [SharePoint]
+  [Maximo]
+  [WhatsApp Business]
+  [Manual Upload UI]
+}
+
+package "Connector Services" {
+  [Email Connector]
+  [SharePoint Connector]
+  [Maximo Connector]
+  [WhatsApp Connector]
+}
+
+package "API Gateway" {
+  [Document Upload API]
+  [Authentication Service]
+  [File Validation Service]
+}
+
+package "Storage Services" {
+  [MinIO/S3 Storage]
+  [PostgreSQL Database]
+  [Redis Cache & Queue]
+  [OpenSearch Vector DB]
+}
+
+package "Processing Services" {
+  [Document Processing Worker]
+  [File Type Detection Service]
+  [Quality Assessment Service]
+  [Text Extraction Service]
+  [OCR Processing Service]
+  [Image Enhancement Service]
+  [CAD Processing Service]
+}
+
+package "RAG Pipeline Services" {
+  [Data Preprocessing Service]
+  [Smart Chunking Service]
+  [Embedding Generation Service]
+  [Vector Storage Service]
+}
+
+package "Intelligence Services" {
+  [Notification Scanner Service]
+  [Trigger Embedding Manager]
+  [Smart Notification Service]
+  [RAG Query Engine]
+  [LLM Response Generator]
+}
+
+package "User Interface Services" {
+  [Department Dashboard Service]
+  [Intelligent Search Service]
+  [Chat Interface Service]
+  [Mobile App Service]
+  [Analytics Service]
+}
+
+package "External Integration Services" {
+  [Maximo Integration Service]
+  [Finance System Sync Service]
+  [Email System Service]
+  [Third-party API Service]
+}
+
+' Data Source to Connector relationships
+[Email Server] --> [Email Connector]
+[SharePoint] --> [SharePoint Connector]
+[Maximo] --> [Maximo Connector]
+[WhatsApp Business] --> [WhatsApp Connector]
+
+' Connector to API relationships
+[Email Connector] --> [Document Upload API]
+[SharePoint Connector] --> [Document Upload API]
+[Maximo Connector] --> [Document Upload API]
+[WhatsApp Connector] --> [Document Upload API]
+[Manual Upload UI] --> [Document Upload API]
+
+' API Gateway internal relationships
+[Document Upload API] --> [Authentication Service]
+[Document Upload API] --> [File Validation Service]
+
+' API to Storage relationships
+[File Validation Service] --> [MinIO/S3 Storage]
+[File Validation Service] --> [PostgreSQL Database]
+[File Validation Service] --> [Redis Cache & Queue]
+
+' Storage to Processing relationships
+[Redis Cache & Queue] --> [Document Processing Worker]
+[MinIO/S3 Storage] --> [Document Processing Worker]
+
+' Processing Service relationships
+[Document Processing Worker] --> [File Type Detection Service]
+[File Type Detection Service] --> [Quality Assessment Service]
+[Quality Assessment Service] --> [Text Extraction Service]
+[Quality Assessment Service] --> [OCR Processing Service]
+[Quality Assessment Service] --> [Image Enhancement Service]
+[Quality Assessment Service] --> [CAD Processing Service]
+
+' Processing to RAG relationships
+[Text Extraction Service] --> [Data Preprocessing Service]
+[OCR Processing Service] --> [Data Preprocessing Service]
+[Image Enhancement Service] --> [Data Preprocessing Service]
+[CAD Processing Service] --> [Data Preprocessing Service]
+
+' RAG Pipeline relationships
+[Data Preprocessing Service] --> [Smart Chunking Service]
+[Smart Chunking Service] --> [Embedding Generation Service]
+[Embedding Generation Service] --> [Vector Storage Service]
+[Vector Storage Service] --> [OpenSearch Vector DB]
+
+' RAG to Intelligence relationships
+[Vector Storage Service] --> [Notification Scanner Service]
+[Vector Storage Service] --> [RAG Query Engine]
+[Notification Scanner Service] --> [Trigger Embedding Manager]
+[Notification Scanner Service] --> [Smart Notification Service]
+[RAG Query Engine] --> [LLM Response Generator]
+
+' Intelligence to UI relationships
+[Smart Notification Service] --> [Department Dashboard Service]
+[RAG Query Engine] --> [Intelligent Search Service]
+[LLM Response Generator] --> [Chat Interface Service]
+[Department Dashboard Service] --> [Mobile App Service]
+[Department Dashboard Service] --> [Analytics Service]
+
+' External Integration relationships
+[Smart Notification Service] --> [Maximo Integration Service]
+[Smart Notification Service] --> [Finance System Sync Service]
+[Smart Notification Service] --> [Email System Service]
+[Department Dashboard Service] --> [Third-party API Service]
+
+@enduml

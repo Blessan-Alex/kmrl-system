@@ -1,0 +1,111 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#ff6b6b',
+      'primaryTextColor': '#000000',
+      'primaryBorderColor': '#ff6b6b',
+      'lineColor': '#4a90e2',
+      'sectionBkgColor': '#f8f9fa',
+      'altSectionBkgColor': '#e9ecef',
+      'gridColor': '#dee2e6',
+      'secondaryColor': '#4ecdc4',
+      'tertiaryColor': '#45b7d1',
+      'primaryTextColor': '#000000',
+      'secondaryTextColor': '#000000',
+      'tertiaryTextColor': '#000000',
+      'lineColor': '#4a90e2',
+      'textColor': '#000000',
+      'mainBkg': '#ffffff',
+      'secondBkg': '#f8f9fa',
+      'tertiaryBkg': '#e9ecef',
+      'arrowTextColor': '#4a90e2',
+      'arrowLineColor': '#4a90e2'
+    }
+  }
+}%%
+
+%% KMRL Smart Notifications Sequence Diagram
+%% Source: detailed_flow.md sections 23-29, flow2.md steps 26-32
+%% Author: Systems Architect
+%% Date: 2024-12-19
+%% Purpose: Smart notification flow using vector similarity search
+
+sequenceDiagram
+    participant PG as PostgreSQL Database
+    participant SCANNER as Notification Scanner Service
+    participant REDIS as Redis Cache
+    participant TRIGGER as Trigger Embedding Manager
+    participant VECTOR as Vector Similarity Search
+    participant OS as OpenSearch Vector DB
+    participant RULES as Notification Rules Engine
+    participant NOTIF as Smart Notification Service
+    participant EMAIL as Email Service
+    participant SMS as SMS Service
+    participant SLACK as Slack Service
+    
+    Note over PG,SLACK: Phase 4: Smart Notifications (detailed_flow.md sections 23-29)
+    
+    %% Trigger Notification Scan
+    PG->>SCANNER: 1. Document Marked as RAG Ready
+    SCANNER->>SCANNER: 2. Trigger Notification Scan
+    Note over SCANNER: Vector similarity search<br/>Document chunk analysis<br/>Trigger pattern matching
+    
+    %% Load Pre-computed Trigger Embeddings
+    SCANNER->>REDIS: 3. Load Trigger Embeddings
+    alt Cache Hit
+        REDIS-->>SCANNER: 4a. Cached Embeddings
+    else Cache Miss
+        REDIS->>TRIGGER: 4b. Generate Embeddings
+        TRIGGER-->>REDIS: 5b. Store Embeddings
+        REDIS-->>SCANNER: 6b. Fresh Embeddings
+    end
+    
+    %% Vector Similarity Search
+    SCANNER->>OS: 7. Get Document Chunks
+    OS-->>SCANNER: 8. Document Chunks with Embeddings
+    
+    SCANNER->>VECTOR: 9. Calculate Similarity
+    Note over VECTOR: Cosine similarity calculation<br/>Chunk-to-trigger comparison<br/>Relevance scoring
+    VECTOR-->>SCANNER: 10. Similarity Scores
+    
+    %% Check Similarity Thresholds
+    SCANNER->>SCANNER: 11. Check Thresholds
+    Note over SCANNER: Urgent maintenance (≥0.85)<br/>Safety incident (≥0.90)<br/>Compliance violation (≥0.80)<br/>Deadline approaching (≥0.75)<br/>Budget exceeded (≥0.80)
+    
+    alt Threshold Exceeded
+        %% Generate Notifications
+        SCANNER->>RULES: 12. Generate Notifications
+        Note over RULES: Rule-based system<br/>Category classification<br/>Recipient determination
+        RULES-->>SCANNER: 13. Notification Rules
+        
+        SCANNER->>NOTIF: 14. Send Smart Notification
+        Note over NOTIF: Multi-channel delivery<br/>Priority-based routing
+        
+        alt Normal Priority
+            NOTIF->>EMAIL: 15a. Send Email
+            EMAIL-->>NOTIF: 16a. Email Sent
+            
+        else High Priority
+            NOTIF->>SLACK: 15b. Send Slack Message
+            SLACK-->>NOTIF: 16b. Slack Sent
+            
+        else Urgent Priority
+            NOTIF->>SMS: 15c. Send SMS
+            SMS-->>NOTIF: 16c. SMS Sent
+        end
+        
+        %% Update Notification Status
+        NOTIF->>PG: 17. Update Notification Status
+        Note over PG: Track delivery<br/>Monitor response<br/>Update document status
+        PG-->>NOTIF: 18. Status Updated
+        
+        NOTIF-->>SCANNER: 19. Notification Complete
+        
+    else Threshold Not Met
+        SCANNER->>SCANNER: 12. Skip Notification
+        Note over SCANNER: No notification needed<br/>Continue monitoring
+    end
+    
+    %% Continuous Monitoring
+    Note over SCANNER: Continuous scanning<br/>Batch processing<br/>Performance optimization

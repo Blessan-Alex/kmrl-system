@@ -1,0 +1,118 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#ff6b6b',
+      'primaryTextColor': '#000000',
+      'primaryBorderColor': '#ff6b6b',
+      'lineColor': '#000000',
+      'sectionBkgColor': '#f8f9fa',
+      'altSectionBkgColor': '#e9ecef',
+      'gridColor': '#dee2e6',
+      'secondaryColor': '#4ecdc4',
+      'tertiaryColor': '#45b7d1',
+      'primaryTextColor': '#000000',
+      'secondaryTextColor': '#000000',
+      'tertiaryTextColor': '#000000',
+      'lineColor': '#000000',
+      'textColor': '#000000',
+      'mainBkg': '#ffffff',
+      'secondBkg': '#f8f9fa',
+      'tertiaryBkg': '#e9ecef'
+    }
+  }
+}%%
+
+%% KMRL Document Processing System - CI/CD Pipeline
+%% Source: detailed_flow.md sections 1-7, flow.md phases 1-4, flow2.md steps 1-42
+%% Author: Systems Architect
+%% Date: 2024-12-19
+%% Purpose: Continuous integration and deployment pipeline
+
+graph LR
+    subgraph "Development"
+        DEV[Developer]
+        CODE[Source Code<br/>Git Repository]
+    end
+    
+    subgraph "CI Pipeline"
+        TRIGGER[Code Push Trigger]
+        BUILD[Build & Test]
+        SECURITY[Security Scan]
+        QUALITY[Code Quality Check]
+        ARTIFACT[Build Artifacts]
+    end
+    
+    subgraph "CD Pipeline"
+        STAGING[Staging Deployment]
+        TESTING[Integration Testing]
+        PROD[Production Deployment]
+        ROLLBACK[Rollback Capability]
+    end
+    
+    subgraph "Infrastructure"
+        ECR[Amazon ECR<br/>Container Registry]
+        ECS[Amazon ECS<br/>Fargate Clusters]
+        ALB[Application Load Balancer]
+        RDS[Amazon RDS<br/>PostgreSQL]
+        CACHE[Amazon ElastiCache<br/>Redis]
+        SEARCH[Amazon OpenSearch]
+        S3[Amazon S3<br/>Document Storage]
+    end
+    
+    subgraph "Monitoring"
+        CW[CloudWatch<br/>Logs & Metrics]
+        XRAY[X-Ray<br/>Distributed Tracing]
+        ALERTS[Alert Manager]
+    end
+    
+    %% Development Flow
+    DEV -->|Push Code| CODE
+    CODE -->|Webhook| TRIGGER
+    
+    %% CI Pipeline Flow
+    TRIGGER --> BUILD
+    BUILD --> SECURITY
+    SECURITY --> QUALITY
+    QUALITY --> ARTIFACT
+    
+    %% Build Process
+    BUILD -->|Docker Build| ECR
+    ARTIFACT -->|Container Images| ECR
+    
+    %% CD Pipeline Flow
+    ARTIFACT -->|Deploy| STAGING
+    STAGING --> TESTING
+    TESTING -->|Approval| PROD
+    PROD -->|Monitor| ROLLBACK
+    
+    %% Infrastructure Deployment
+    PROD -->|Deploy| ECS
+    ECS --> ALB
+    ECS --> RDS
+    ECS --> CACHE
+    ECS --> SEARCH
+    ECS --> S3
+    
+    %% Monitoring Integration
+    ECS --> CW
+    ECS --> XRAY
+    CW --> ALERTS
+    XRAY --> ALERTS
+    
+    %% Rollback Flow
+    ALERTS -->|Critical Issues| ROLLBACK
+    ROLLBACK -->|Previous Version| ECS
+    
+    %% Styling
+    classDef development fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef ci fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef cd fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    classDef infrastructure fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    classDef monitoring fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    
+    class DEV,CODE development
+    class TRIGGER,BUILD,SECURITY,QUALITY,ARTIFACT ci
+    class STAGING,TESTING,PROD,ROLLBACK cd
+    class ECR,ECS,ALB,RDS,CACHE,SEARCH,S3 infrastructure
+    class CW,XRAY,ALERTS monitoring

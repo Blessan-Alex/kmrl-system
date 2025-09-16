@@ -1,0 +1,113 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#ff6b6b',
+      'primaryTextColor': '#000000',
+      'primaryBorderColor': '#ff6b6b',
+      'lineColor': '#000000',
+      'sectionBkgColor': '#f8f9fa',
+      'altSectionBkgColor': '#e9ecef',
+      'gridColor': '#dee2e6',
+      'secondaryColor': '#4ecdc4',
+      'tertiaryColor': '#45b7d1',
+      'primaryTextColor': '#000000',
+      'secondaryTextColor': '#000000',
+      'tertiaryTextColor': '#000000',
+      'lineColor': '#000000',
+      'textColor': '#000000',
+      'mainBkg': '#ffffff',
+      'secondBkg': '#f8f9fa',
+      'tertiaryBkg': '#e9ecef'
+    }
+  }
+}%%
+
+%% KMRL Document Processing System - Data Flow Diagram Level 1
+%% Source: detailed_flow.md sections 1-7, flow.md phases 1-4, flow2.md steps 1-42
+%% Author: Systems Architect
+%% Date: 2024-12-19
+%% Purpose: Detailed data flow between internal processes
+
+graph TB
+    subgraph "External Entities"
+        E1[External Data Sources]
+        E2[Users]
+        E3[External Systems]
+        E4[LLM Providers]
+        E5[Notification Services]
+    end
+    
+    subgraph "Processes"
+        P1[1.0 Document Ingestion]
+        P2[2.0 Document Processing]
+        P3[3.0 RAG Pipeline Preparation]
+        P4[4.0 Smart Notifications]
+        P5[5.0 RAG Query Processing]
+        P6[6.0 User Interfaces]
+    end
+    
+    subgraph "Data Stores"
+        D1[Document Storage<br/>MinIO/S3]
+        D2[Metadata Database<br/>PostgreSQL]
+        D3[Vector Database<br/>OpenSearch]
+        D4[Cache & Queue<br/>Redis]
+    end
+    
+    %% External to Process flows
+    E1 -->|Documents| P1
+    E2 -->|Manual Uploads| P1
+    E2 -->|Queries| P5
+    E2 -->|UI Interactions| P6
+    E4 -->|Embeddings| P3
+    E4 -->|LLM Responses| P5
+    E5 -->|Notification Delivery| P4
+    
+    %% Process to External flows
+    P1 -->|Status Updates| E2
+    P4 -->|Notifications| E5
+    P5 -->|Responses| E2
+    P6 -->|UI Data| E2
+    P6 -->|Sync Data| E3
+    
+    %% Process to Process flows
+    P1 -->|Validated Documents| P2
+    P2 -->|Processed Text| P3
+    P3 -->|Vector Embeddings| P4
+    P3 -->|RAG Ready Data| P5
+    P4 -->|Notification Status| P6
+    P5 -->|Query Results| P6
+    
+    %% Process to Data Store flows
+    P1 -->|Original Files| D1
+    P1 -->|Metadata| D2
+    P1 -->|Queue Messages| D4
+    P2 -->|Processed Text| D2
+    P2 -->|Processing Status| D2
+    P3 -->|Vector Embeddings| D3
+    P3 -->|Chunk Metadata| D3
+    P4 -->|Trigger Embeddings| D4
+    P4 -->|Notification Rules| D2
+    P5 -->|Query Cache| D4
+    P6 -->|User Sessions| D4
+    P6 -->|Analytics Data| D2
+    
+    %% Data Store to Process flows
+    D1 -->|File Retrieval| P2
+    D2 -->|Metadata Queries| P2
+    D2 -->|User Data| P6
+    D3 -->|Vector Searches| P4
+    D3 -->|Vector Searches| P5
+    D4 -->|Queue Processing| P2
+    D4 -->|Cache Data| P4
+    D4 -->|Cache Data| P5
+    D4 -->|Session Data| P6
+    
+    %% Styling
+    classDef external fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef process fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef datastore fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    
+    class E1,E2,E3,E4,E5 external
+    class P1,P2,P3,P4,P5,P6 process
+    class D1,D2,D3,D4 datastore

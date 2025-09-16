@@ -1,0 +1,88 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#ff6b6b',
+      'primaryTextColor': '#000000',
+      'primaryBorderColor': '#ff6b6b',
+      'lineColor': '#4a90e2',
+      'sectionBkgColor': '#f8f9fa',
+      'altSectionBkgColor': '#e9ecef',
+      'gridColor': '#dee2e6',
+      'secondaryColor': '#4ecdc4',
+      'tertiaryColor': '#45b7d1',
+      'primaryTextColor': '#000000',
+      'secondaryTextColor': '#000000',
+      'tertiaryTextColor': '#000000',
+      'lineColor': '#4a90e2',
+      'textColor': '#000000',
+      'mainBkg': '#ffffff',
+      'secondBkg': '#f8f9fa',
+      'tertiaryBkg': '#e9ecef',
+      'arrowTextColor': '#4a90e2',
+      'arrowLineColor': '#4a90e2'
+    }
+  }
+}%%
+
+%% KMRL RAG Query Processing Sequence Diagram
+%% Source: detailed_flow.md sections 30-32, flow.md phase 4, flow2.md steps 34-36
+%% Author: Systems Architect
+%% Date: 2024-12-19
+%% Purpose: RAG query processing from user query to LLM response
+
+sequenceDiagram
+    participant USER as User
+    participant UI as User Interface
+    participant RAG as RAG Query Engine
+    participant EMBED as Embedding Generation Service
+    participant OPENAI as OpenAI API
+    participant VECTOR as Vector Similarity Search
+    participant OS as OpenSearch Vector DB
+    participant CONTEXT as Context Assembly Service
+    participant LLM as LLM Response Generator
+    participant GEMINI as Google Gemini API
+    
+    Note over USER,GEMINI: Phase 5: RAG Query Processing (detailed_flow.md sections 30-32)
+    
+    %% User Query
+    USER->>UI: 1. Submit Query
+    Note over UI: Intelligent Search Interface<br/>Chat Interface<br/>Department Dashboard
+    
+    UI->>RAG: 2. Process Query
+    Note over RAG: Convert query to embedding<br/>Vector similarity search<br/>Retrieve relevant chunks<br/>Rank by relevance
+    
+    %% Query Processing
+    RAG->>EMBED: 3. Generate Query Embedding
+    EMBED->>OPENAI: 4. Request Embedding
+    Note over OPENAI: OpenAI text-embedding-3-large<br/>or all-MiniLM-L6-v2
+    OPENAI-->>EMBED: 5. Query Embedding
+    EMBED-->>RAG: 6. Embedding Data
+    
+    %% Vector Similarity Search
+    RAG->>VECTOR: 7. Search Similar Documents
+    VECTOR->>OS: 8. Vector Similarity Search
+    Note over OS: Retrieve relevant chunks<br/>Rank by relevance<br/>Apply filters
+    OS-->>VECTOR: 9. Similar Chunks
+    VECTOR-->>RAG: 10. Search Results
+    
+    %% Context Assembly
+    RAG->>CONTEXT: 11. Assemble Context
+    Note over CONTEXT: Combine retrieved chunks<br/>Add metadata context<br/>Prepare for LLM
+    CONTEXT-->>RAG: 12. Assembled Context
+    
+    %% LLM Response Generation
+    RAG->>LLM: 13. Generate Response
+    LLM->>GEMINI: 14. Request LLM Response
+    Note over GEMINI: Provide context to LLM<br/>Generate KMRL-specific response<br/>Include source citations<br/>Return structured response
+    GEMINI-->>LLM: 15. LLM Response
+    
+    LLM-->>RAG: 16. Structured Response
+    
+    %% Return Response
+    RAG-->>UI: 17. Query Response
+    Note over UI: Answer with sources<br/>Related documents<br/>Suggested queries<br/>Confidence score
+    UI-->>USER: 18. Display Response
+    
+    %% Optional: Follow-up Query
+    Note over USER: Multi-turn conversations<br/>Context awareness<br/>Session management

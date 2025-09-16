@@ -1,0 +1,86 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#ff6b6b',
+      'primaryTextColor': '#000000',
+      'primaryBorderColor': '#ff6b6b',
+      'lineColor': '#4a90e2',
+      'sectionBkgColor': '#f8f9fa',
+      'altSectionBkgColor': '#e9ecef',
+      'gridColor': '#dee2e6',
+      'secondaryColor': '#4ecdc4',
+      'tertiaryColor': '#45b7d1',
+      'primaryTextColor': '#000000',
+      'secondaryTextColor': '#000000',
+      'tertiaryTextColor': '#000000',
+      'lineColor': '#4a90e2',
+      'textColor': '#000000',
+      'mainBkg': '#ffffff',
+      'secondBkg': '#f8f9fa',
+      'tertiaryBkg': '#e9ecef',
+      'arrowTextColor': '#4a90e2',
+      'arrowLineColor': '#4a90e2'
+    }
+  }
+}%%
+
+%% KMRL Document Upload Sequence Diagram
+%% Source: detailed_flow.md sections 1-2, flow.md phase 1, flow2.md steps 1-7
+%% Author: Systems Architect
+%% Date: 2024-12-19
+%% Purpose: Document upload flow from external sources to processing queue
+
+sequenceDiagram
+    participant EDS as External Data Source
+    participant CONN as Connector Service
+    participant API as Document Upload API
+    participant AUTH as Authentication Service
+    participant VAL as File Validation Service
+    participant S3 as MinIO/S3 Storage
+    participant PG as PostgreSQL Database
+    participant REDIS as Redis Queue
+    
+    Note over EDS,REDIS: Phase 1: Document Ingestion (detailed_flow.md sections 1-6)
+    
+    %% Automatic Upload Flow
+    EDS->>CONN: 1. New Document Available
+    CONN->>CONN: 2. Fetch Document Data
+    CONN->>API: 3. POST /api/v1/documents/upload<br/>API Key Auth
+    
+    %% Manual Upload Flow (Alternative)
+    Note over API: Manual Upload Alternative
+    API->>API: 3a. Manual Upload<br/>Session Auth
+    
+    %% Authentication
+    API->>AUTH: 4. Validate Authentication
+    AUTH-->>API: 5. Auth Success/Failure
+    
+    %% File Validation
+    API->>VAL: 6. Validate File
+    Note over VAL: Size limits (200MB max)<br/>File type validation<br/>Security scanning<br/>Format verification
+    VAL-->>API: 7. Validation Result
+    
+    alt Validation Success
+        %% Storage Operations
+        API->>S3: 8. Save Original File
+        S3-->>API: 9. File URL
+        
+        API->>PG: 10. Create Database Record
+        Note over PG: Store metadata<br/>File path<br/>Upload timestamp<br/>User info
+        PG-->>API: 11. Document ID
+        
+        %% Queue Processing
+        API->>REDIS: 12. Queue Processing Task
+        Note over REDIS: Redis + Celery<br/>Async processing
+        REDIS-->>API: 13. Task Queued
+        
+        API-->>CONN: 14. Upload Success Response
+        
+    else Validation Failure
+        API-->>CONN: 14. Upload Failure Response
+        Note over CONN: Handle rejection<br/>Log error
+    end
+    
+    %% Background Processing Trigger
+    Note over REDIS: Worker will pick up task<br/>for document processing

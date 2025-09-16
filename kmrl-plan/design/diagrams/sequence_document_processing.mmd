@@ -1,0 +1,125 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#ff6b6b',
+      'primaryTextColor': '#000000',
+      'primaryBorderColor': '#ff6b6b',
+      'lineColor': '#4a90e2',
+      'sectionBkgColor': '#f8f9fa',
+      'altSectionBkgColor': '#e9ecef',
+      'gridColor': '#dee2e6',
+      'secondaryColor': '#4ecdc4',
+      'tertiaryColor': '#45b7d1',
+      'primaryTextColor': '#000000',
+      'secondaryTextColor': '#000000',
+      'tertiaryTextColor': '#000000',
+      'lineColor': '#4a90e2',
+      'textColor': '#000000',
+      'mainBkg': '#ffffff',
+      'secondBkg': '#f8f9fa',
+      'tertiaryBkg': '#e9ecef',
+      'arrowTextColor': '#4a90e2',
+      'arrowLineColor': '#4a90e2'
+    }
+  }
+}%%
+
+%% KMRL Document Processing Sequence Diagram
+%% Source: detailed_flow.md sections 7-17, flow.md phase 2, flow2.md steps 9-18
+%% Author: Systems Architect
+%% Date: 2024-12-19
+%% Purpose: Document processing flow from queue to processed text
+
+sequenceDiagram
+    participant REDIS as Redis Queue
+    participant WORKER as Document Processing Worker
+    participant S3 as MinIO/S3 Storage
+    participant DETECT as File Type Detection Service
+    participant QUALITY as Quality Assessment Service
+    participant TEXT as Text Extraction Service
+    participant OCR as OCR Processing Service
+    participant IMAGE as Image Enhancement Service
+    participant CAD as CAD Processing Service
+    participant PG as PostgreSQL Database
+    participant REVIEW as Human Review System
+    
+    Note over REDIS,REVIEW: Phase 2: Document Processing (detailed_flow.md sections 7-17)
+    
+    %% Worker picks up task
+    REDIS->>WORKER: 1. Pick Processing Task
+    WORKER->>S3: 2. Download File from MinIO
+    S3-->>WORKER: 3. File Data
+    
+    %% File Type Detection
+    WORKER->>DETECT: 4. Detect File Type
+    Note over DETECT: Technical drawings (.dwg, .dxf)<br/>Images (.jpg, .png)<br/>PDFs (text/image/mixed)<br/>Office docs (.docx, .xlsx)<br/>Text files (.txt, .md)<br/>Unknown files
+    DETECT-->>WORKER: 5. File Type & Category
+    
+    %% Quality Assessment
+    WORKER->>QUALITY: 6. Assess Quality
+    Note over QUALITY: File size check (50MB limit)<br/>Image quality analysis<br/>Text density check<br/>Confidence scoring
+    QUALITY-->>WORKER: 7. Quality Result
+    
+    alt Quality Check: Process
+        %% Route to Processor
+        WORKER->>WORKER: 8. Route to Processor
+        
+        alt Text Document Processing
+            WORKER->>TEXT: 9a. Extract Text
+            Note over TEXT: Use Markitdown for Office docs<br/>Direct text extraction for text files<br/>Markitdown for PDFs with text<br/>Language detection
+            TEXT-->>WORKER: 10a. Extracted Text
+            
+        else Image Document Processing
+            WORKER->>IMAGE: 9b. Enhance Image (if needed)
+            Note over IMAGE: Denoise<br/>Enhance contrast<br/>Sharpen<br/>Save enhanced image
+            IMAGE-->>WORKER: 10b. Enhanced Image
+            
+            WORKER->>OCR: 11b. OCR Processing
+            Note over OCR: Malayalam OCR (mal+eng)<br/>English OCR (eng)<br/>Confidence assessment
+            OCR-->>WORKER: 12b. OCR Text
+            
+        else Technical Drawing Processing
+            WORKER->>CAD: 9c. Process CAD Files
+            Note over CAD: CAD files (.dwg, .dxf)<br/>STEP files (.step, .stp)<br/>Extract metadata<br/>Create placeholder text<br/>Flag for specialized viewer
+            CAD-->>WORKER: 10c. CAD Metadata
+            
+        else Mixed Content Processing
+            WORKER->>TEXT: 9d. Extract Text with Markitdown
+            TEXT-->>WORKER: 10d. Text Content
+            
+            WORKER->>OCR: 11d. Process Images with OCR
+            OCR-->>WORKER: 12d. OCR Content
+            
+            WORKER->>WORKER: 13d. Combine Text + OCR Results
+        end
+        
+        %% Quality Validation
+        WORKER->>QUALITY: 14. Validate Processing Quality
+        Note over QUALITY: Confidence scoring<br/>OCR error detection<br/>Text quality assessment<br/>Processing method validation
+        QUALITY-->>WORKER: 15. Confidence Score
+        
+        alt High Confidence (≥0.7)
+            WORKER->>PG: 16a. Save Processing Results
+            Note over PG: Store processed text<br/>Update metadata<br/>Set processing status
+            PG-->>WORKER: 17a. Save Success
+            
+        else Low Confidence (<0.7)
+            WORKER->>REVIEW: 16b. Flag for Human Review
+            Note over REVIEW: Create review task<br/>Update document status<br/>Notify human reviewers<br/>Set priority levels
+            REVIEW-->>WORKER: 17b. Review Task Created
+        end
+        
+    else Quality Check: Enhance
+        WORKER->>IMAGE: 8. Image Enhancement
+        IMAGE-->>WORKER: 9. Enhanced Image
+        WORKER->>WORKER: 10. Route to Processor (retry)
+        
+    else Quality Check: Reject
+        WORKER->>PG: 8. Handle Poor Quality
+        Note over PG: Create rejection record<br/>Update document status<br/>Notify user<br/>Log rejection reason
+        PG-->>WORKER: 9. Rejection Recorded
+    end
+    
+    %% Error Handling
+    Note over WORKER: Error Handling & Fallbacks<br/>OCR error handling<br/>Try alternative OCR engines<br/>Try different configurations<br/>Use best result if available<br/>Flag for human review if all fail

@@ -1,0 +1,84 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#ff6b6b',
+      'primaryTextColor': '#000000',
+      'primaryBorderColor': '#ff6b6b',
+      'lineColor': '#000000',
+      'sectionBkgColor': '#f8f9fa',
+      'altSectionBkgColor': '#e9ecef',
+      'gridColor': '#dee2e6',
+      'secondaryColor': '#4ecdc4',
+      'tertiaryColor': '#45b7d1',
+      'primaryTextColor': '#000000',
+      'secondaryTextColor': '#000000',
+      'tertiaryTextColor': '#000000',
+      'lineColor': '#000000',
+      'textColor': '#000000',
+      'mainBkg': '#ffffff',
+      'secondBkg': '#f8f9fa',
+      'tertiaryBkg': '#e9ecef'
+    }
+  }
+}%%
+
+%% KMRL Document Processing System - Data Flow Diagram Level 0
+%% Source: detailed_flow.md sections 1-7, flow.md phases 1-4, flow2.md steps 1-42
+%% Author: Systems Architect
+%% Date: 2024-12-19
+%% Purpose: High-level data flow between external entities and the system
+
+graph LR
+    subgraph "External Entities"
+        E1[External Data Sources<br/>Email, SharePoint, Maximo, WhatsApp]
+        E2[Users<br/>Department Staff, Field Workers]
+        E3[External Systems<br/>Maximo, Finance, Email]
+        E4[LLM Providers<br/>OpenAI, Gemini]
+        E5[Notification Services<br/>Twilio, SendGrid, Slack]
+    end
+    
+    subgraph "KMRL Document Processing System"
+        P0[Document Processing System<br/>Complete Pipeline]
+    end
+    
+    subgraph "Data Stores"
+        D1[Document Storage<br/>MinIO/S3]
+        D2[Metadata Database<br/>PostgreSQL]
+        D3[Vector Database<br/>OpenSearch]
+        D4[Cache & Queue<br/>Redis]
+    end
+    
+    %% External to System flows
+    E1 -->|Documents & Attachments| P0
+    E2 -->|Manual Uploads, Queries| P0
+    E3 -->|Integration Data| P0
+    E4 -->|Embeddings & LLM Responses| P0
+    E5 -->|Notification Delivery| P0
+    
+    %% System to External flows
+    P0 -->|Processed Documents| E2
+    P0 -->|Sync Data| E3
+    P0 -->|Query Requests| E4
+    P0 -->|Notification Requests| E5
+    
+    %% System to Data Store flows
+    P0 -->|Original Files| D1
+    P0 -->|Metadata & Text| D2
+    P0 -->|Vector Embeddings| D3
+    P0 -->|Queue Messages & Cache| D4
+    
+    %% Data Store to System flows
+    D1 -->|File Retrieval| P0
+    D2 -->|Metadata Queries| P0
+    D3 -->|Vector Searches| P0
+    D4 -->|Queue Processing| P0
+    
+    %% Styling
+    classDef external fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef system fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px
+    classDef datastore fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    
+    class E1,E2,E3,E4,E5 external
+    class P0 system
+    class D1,D2,D3,D4 datastore

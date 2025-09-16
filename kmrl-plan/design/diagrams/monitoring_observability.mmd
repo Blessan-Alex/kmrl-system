@@ -1,0 +1,142 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#ff6b6b',
+      'primaryTextColor': '#000000',
+      'primaryBorderColor': '#ff6b6b',
+      'lineColor': '#000000',
+      'sectionBkgColor': '#f8f9fa',
+      'altSectionBkgColor': '#e9ecef',
+      'gridColor': '#dee2e6',
+      'secondaryColor': '#4ecdc4',
+      'tertiaryColor': '#45b7d1',
+      'primaryTextColor': '#000000',
+      'secondaryTextColor': '#000000',
+      'tertiaryTextColor': '#000000',
+      'lineColor': '#000000',
+      'textColor': '#000000',
+      'mainBkg': '#ffffff',
+      'secondBkg': '#f8f9fa',
+      'tertiaryBkg': '#e9ecef'
+    }
+  }
+}%%
+
+%% KMRL Document Processing System - Monitoring & Observability
+%% Source: detailed_flow.md sections 1-7, flow.md phases 1-4, flow2.md steps 1-42
+%% Author: Systems Architect
+%% Date: 2024-12-19
+%% Purpose: Comprehensive monitoring, logging, and observability architecture
+
+graph TB
+    subgraph "Application Layer"
+        API[Document Upload API]
+        WORKER[Processing Workers]
+        RAG[RAG Query Engine]
+        NOTIF[Notification Service]
+        UI[User Interfaces]
+    end
+    
+    subgraph "Metrics Collection"
+        CW_METRICS[CloudWatch Metrics<br/>Custom & System Metrics]
+        PROMETHEUS[Prometheus<br/>Application Metrics]
+        GRAFANA[Grafana<br/>Visualization]
+    end
+    
+    subgraph "Logging"
+        CW_LOGS[CloudWatch Logs<br/>Centralized Logging]
+        ELK[ELK Stack<br/>Log Analysis]
+        LOG_AGG[Log Aggregation<br/>Structured Logs]
+    end
+    
+    subgraph "Tracing"
+        XRAY[X-Ray<br/>Distributed Tracing]
+        JAEGER[Jaeger<br/>OpenTelemetry]
+        TRACE_AGG[Trace Aggregation<br/>Request Flow]
+    end
+    
+    subgraph "Alerting"
+        ALERT_MGR[Alert Manager<br/>Threshold Monitoring]
+        PAGERDUTY[PagerDuty<br/>Incident Response]
+        SLACK_ALERT[Slack Alerts<br/>Team Notifications]
+    end
+    
+    subgraph "Dashboards"
+        OPS_DASH[Operations Dashboard<br/>System Health]
+        PERF_DASH[Performance Dashboard<br/>SLO Monitoring]
+        BIZ_DASH[Business Dashboard<br/>Document Metrics]
+    end
+    
+    subgraph "SLOs & SLIs"
+        AVAILABILITY[Availability<br/>99.9% Uptime]
+        LATENCY[Latency<br/>P95 < 2s Response]
+        THROUGHPUT[Throughput<br/>1000 docs/hour]
+        ERROR_RATE[Error Rate<br/>< 0.1% Failures]
+    end
+    
+    %% Metrics Flow
+    API --> CW_METRICS
+    WORKER --> CW_METRICS
+    RAG --> CW_METRICS
+    NOTIF --> CW_METRICS
+    UI --> CW_METRICS
+    
+    CW_METRICS --> PROMETHEUS
+    PROMETHEUS --> GRAFANA
+    
+    %% Logging Flow
+    API --> CW_LOGS
+    WORKER --> CW_LOGS
+    RAG --> CW_LOGS
+    NOTIF --> CW_LOGS
+    UI --> CW_LOGS
+    
+    CW_LOGS --> ELK
+    CW_LOGS --> LOG_AGG
+    
+    %% Tracing Flow
+    API --> XRAY
+    WORKER --> XRAY
+    RAG --> XRAY
+    NOTIF --> XRAY
+    UI --> XRAY
+    
+    XRAY --> JAEGER
+    XRAY --> TRACE_AGG
+    
+    %% Alerting Flow
+    CW_METRICS --> ALERT_MGR
+    CW_LOGS --> ALERT_MGR
+    XRAY --> ALERT_MGR
+    
+    ALERT_MGR --> PAGERDUTY
+    ALERT_MGR --> SLACK_ALERT
+    
+    %% Dashboard Flow
+    GRAFANA --> OPS_DASH
+    ELK --> PERF_DASH
+    LOG_AGG --> BIZ_DASH
+    
+    %% SLO Monitoring
+    OPS_DASH --> AVAILABILITY
+    PERF_DASH --> LATENCY
+    PERF_DASH --> THROUGHPUT
+    BIZ_DASH --> ERROR_RATE
+    
+    %% Styling
+    classDef application fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef metrics fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef logging fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    classDef tracing fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    classDef alerting fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    classDef dashboard fill:#f1f8e9,stroke:#689f38,stroke-width:2px
+    classDef slo fill:#fff8e1,stroke:#ffa000,stroke-width:2px
+    
+    class API,WORKER,RAG,NOTIF,UI application
+    class CW_METRICS,PROMETHEUS,GRAFANA metrics
+    class CW_LOGS,ELK,LOG_AGG logging
+    class XRAY,JAEGER,TRACE_AGG tracing
+    class ALERT_MGR,PAGERDUTY,SLACK_ALERT alerting
+    class OPS_DASH,PERF_DASH,BIZ_DASH dashboard
+    class AVAILABILITY,LATENCY,THROUGHPUT,ERROR_RATE slo

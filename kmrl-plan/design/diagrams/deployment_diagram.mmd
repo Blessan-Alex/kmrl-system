@@ -1,0 +1,201 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#ff6b6b',
+      'primaryTextColor': '#000000',
+      'primaryBorderColor': '#ff6b6b',
+      'lineColor': '#000000',
+      'sectionBkgColor': '#f8f9fa',
+      'altSectionBkgColor': '#e9ecef',
+      'gridColor': '#dee2e6',
+      'secondaryColor': '#4ecdc4',
+      'tertiaryColor': '#45b7d1',
+      'primaryTextColor': '#000000',
+      'secondaryTextColor': '#000000',
+      'tertiaryTextColor': '#000000',
+      'lineColor': '#000000',
+      'textColor': '#000000',
+      'mainBkg': '#ffffff',
+      'secondBkg': '#f8f9fa',
+      'tertiaryBkg': '#e9ecef'
+    }
+  }
+}%%
+
+%% KMRL Document Processing System - Deployment Diagram
+%% Source: detailed_flow.md sections 1-7, flow.md phases 1-4, flow2.md steps 1-42
+%% Author: Systems Architect
+%% Date: 2024-12-19
+%% Purpose: Cloud deployment topology and network boundaries
+
+graph TB
+    subgraph "Internet"
+        EXT1[External Data Sources<br/>Email, SharePoint, Maximo, WhatsApp]
+        EXT2[External Users<br/>Web Browsers, Mobile Apps]
+    end
+    
+    subgraph "AWS Cloud Environment"
+        subgraph "VPC: kmrl-document-processing-vpc"
+            subgraph "Public Subnet: us-east-1a"
+                LB[Application Load Balancer<br/>SSL Termination]
+                NAT1[NAT Gateway]
+            end
+            
+            subgraph "Private Subnet: us-east-1a"
+                subgraph "API Tier"
+                    API1[Document Upload API<br/>ECS Fargate - 2 instances]
+                    API2[Authentication Service<br/>ECS Fargate - 2 instances]
+                    API3[File Validation Service<br/>ECS Fargate - 2 instances]
+                end
+                
+                subgraph "Processing Tier"
+                    WORKER1[Document Processing Worker<br/>ECS Fargate - 4 instances]
+                    WORKER2[OCR Processing Worker<br/>ECS Fargate - 2 instances]
+                    WORKER3[Image Enhancement Worker<br/>ECS Fargate - 2 instances]
+                end
+                
+                subgraph "Intelligence Tier"
+                    RAG1[RAG Query Engine<br/>ECS Fargate - 2 instances]
+                    RAG2[LLM Response Generator<br/>ECS Fargate - 2 instances]
+                    NOTIF1[Notification Scanner<br/>ECS Fargate - 2 instances]
+                end
+            end
+            
+            subgraph "Private Subnet: us-east-1b"
+                subgraph "UI Tier"
+                    UI1[Department Dashboard<br/>ECS Fargate - 2 instances]
+                    UI2[Chat Interface<br/>ECS Fargate - 2 instances]
+                    UI3[Analytics Service<br/>ECS Fargate - 2 instances]
+                end
+                
+                subgraph "Integration Tier"
+                    CONN1[Email Connector<br/>ECS Fargate - 1 instance]
+                    CONN2[SharePoint Connector<br/>ECS Fargate - 1 instance]
+                    CONN3[Maximo Connector<br/>ECS Fargate - 1 instance]
+                    CONN4[WhatsApp Connector<br/>ECS Fargate - 1 instance]
+                end
+            end
+            
+            subgraph "Database Tier"
+                subgraph "RDS Subnet Group"
+                    PG1[PostgreSQL Primary<br/>RDS - db.t3.large]
+                    PG2[PostgreSQL Read Replica<br/>RDS - db.t3.medium]
+                end
+                
+                subgraph "Cache Tier"
+                    REDIS1[Redis Cluster<br/>ElastiCache - cache.t3.medium]
+                end
+                
+                subgraph "Vector Database Tier"
+                    OS1[OpenSearch Cluster<br/>OpenSearch - t3.small.search]
+                end
+            end
+            
+            subgraph "Storage Tier"
+                S3[MinIO/S3 Bucket<br/>Document Storage]
+            end
+        end
+        
+        subgraph "Security & Monitoring"
+            CW[CloudWatch<br/>Logs & Metrics]
+            XRAY[X-Ray<br/>Distributed Tracing]
+            SECRETS[Secrets Manager<br/>API Keys & Credentials]
+        end
+    end
+    
+    subgraph "External Services"
+        OPENAI[OpenAI API<br/>Embeddings & LLM]
+        GEMINI[Google Gemini API<br/>LLM Fallback]
+        TWILIO[Twilio<br/>SMS Notifications]
+        SENDGRID[SendGrid<br/>Email Notifications]
+        SLACK[Slack API<br/>Team Notifications]
+    end
+    
+    %% Network Connections
+    EXT1 --> LB
+    EXT2 --> LB
+    LB --> API1
+    LB --> API2
+    LB --> API3
+    
+    API1 --> WORKER1
+    API2 --> WORKER1
+    API3 --> WORKER1
+    
+    WORKER1 --> WORKER2
+    WORKER1 --> WORKER3
+    
+    WORKER1 --> RAG1
+    WORKER2 --> RAG1
+    WORKER3 --> RAG1
+    
+    RAG1 --> RAG2
+    RAG1 --> NOTIF1
+    
+    API1 --> UI1
+    RAG2 --> UI2
+    NOTIF1 --> UI3
+    
+    CONN1 --> API1
+    CONN2 --> API1
+    CONN3 --> API1
+    CONN4 --> API1
+    
+    API1 --> PG1
+    API2 --> PG1
+    API3 --> PG1
+    WORKER1 --> PG1
+    RAG1 --> PG1
+    UI1 --> PG2
+    
+    API1 --> REDIS1
+    WORKER1 --> REDIS1
+    RAG1 --> REDIS1
+    NOTIF1 --> REDIS1
+    
+    RAG1 --> OS1
+    NOTIF1 --> OS1
+    
+    API1 --> S3
+    WORKER1 --> S3
+    
+    RAG2 --> OPENAI
+    RAG2 --> GEMINI
+    NOTIF1 --> TWILIO
+    NOTIF1 --> SENDGRID
+    NOTIF1 --> SLACK
+    
+    %% Monitoring Connections
+    API1 --> CW
+    WORKER1 --> CW
+    RAG1 --> CW
+    UI1 --> CW
+    API1 --> XRAY
+    WORKER1 --> XRAY
+    RAG1 --> XRAY
+    
+    %% Security Connections
+    API1 --> SECRETS
+    CONN1 --> SECRETS
+    CONN2 --> SECRETS
+    CONN3 --> SECRETS
+    CONN4 --> SECRETS
+    
+    %% Styling
+    classDef internet fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef vpc fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px
+    classDef public fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    classDef private fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    classDef database fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    classDef storage fill:#f1f8e9,stroke:#689f38,stroke-width:2px
+    classDef external fill:#fafafa,stroke:#616161,stroke-width:2px
+    classDef monitoring fill:#fff8e1,stroke:#ffa000,stroke-width:2px
+    
+    class EXT1,EXT2 internet
+    class LB,NAT1 public
+    class API1,API2,API3,WORKER1,WORKER2,WORKER3,RAG1,RAG2,NOTIF1,UI1,UI2,UI3,CONN1,CONN2,CONN3,CONN4 private
+    class PG1,PG2,REDIS1,OS1 database
+    class S3 storage
+    class OPENAI,GEMINI,TWILIO,SENDGRID,SLACK external
+    class CW,XRAY,SECRETS monitoring
