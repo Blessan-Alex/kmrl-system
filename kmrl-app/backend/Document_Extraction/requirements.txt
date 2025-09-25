@@ -1,0 +1,45 @@
+# Core Dependencies
+celery>=5.3.0
+redis>=4.5.0
+pydantic>=2.0.0
+loguru>=0.7.0
+python-dotenv>=1.0.0
+
+# Image Processing & OCR
+opencv-python>=4.8.0
+pytesseract>=0.3.10
+Pillow>=10.0.0
+numpy>=1.24.0
+
+# Document Processing
+markitdown>=0.0.1a0
+PyPDF2>=3.0.0
+pdfplumber>=0.10.0
+python-docx>=0.8.11
+pandas>=2.0.0
+openpyxl>=3.1.0
+
+# File Detection
+python-magic>=0.4.27
+python-magic-bin>=0.4.14  # Windows alternative
+
+# Language Detection
+langdetect>=1.0.9
+
+# CAD Processing
+ezdxf>=1.1.0
+
+# Optional CAD Processing (choose one)
+# OCP>=0.7.0  # Preferred
+# pythonocc-core>=7.6.0  # Alternative
+
+# Testing
+pytest>=7.0.0
+
+# Development (optional)
+jupyter>=1.0.0
+black>=23.0.0
+flake8>=6.0.0
+
+# Windows-specific (install manually on Windows)
+# pywin32>=306  # For Windows services

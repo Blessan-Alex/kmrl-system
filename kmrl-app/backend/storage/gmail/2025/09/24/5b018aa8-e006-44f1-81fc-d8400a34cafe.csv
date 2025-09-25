@@ -1,0 +1,378 @@
+workDate,itemID,duration,rateApplied,payout,payType,projectName,status
+6-Jul-25,686ac5cc2649a42eb4bd301b,24m 23s,$22.00/hr,$8.94 ,prepay,Minister Bath,pending
+6-Jul-25,686aba2f5485ebc243fdadca,24m 20s,$22.00/hr,$8.93 ,prepay,Minister Bath,pending
+6-Jul-25,686aaa5b261d04ba4dcd2c7e,24m 14s,$22.00/hr,$8.89 ,prepay,Minister Bath,pending
+6-Jul-25,686aaa59c72cceb07fad05e1,24m 21s,$22.00/hr,$8.93 ,prepay,Minister Bath,pending
+6-Jul-25,686855d35bd87c6206cd3489,24m 41s,$22.00/hr,$9.06 ,prepay,Minister Bath,pending
+6-Jul-25,686aa3cdcc83cdf4ef844b66,24m 12s,$22.00/hr,$8.88 ,prepay,Minister Bath,pending
+6-Jul-25,686a9b3f5e527abe1aae3646,24m 11s,$22.00/hr,$8.87 ,prepay,Minister Bath,pending
+6-Jul-25,686a57ece74345f8c2ce7d17,24m 10s,$22.00/hr,$8.86 ,prepay,Minister Bath,pending
+6-Jul-25,686a291526be67dde2ac4b6c,24m 16s,$22.00/hr,$8.90 ,prepay,Minister Bath,pending
+6-Jul-25,686a23f0f5cc2e5d6e34bb48,24m 54s,$22.00/hr,$9.14 ,prepay,Minister Bath,pending
+6-Jul-25,686a1e05fb1223052ee2623b,24m 38s,$22.00/hr,$9.03 ,prepay,Minister Bath,pending
+6-Jul-25,686a1752f5cc2e5d6e349146,24m 27s,$22.00/hr,$8.97 ,prepay,Minister Bath,pending
+6-Jul-25,686a128d8a254358997f556d,24m 31s,$22.00/hr,$8.99 ,prepay,Minister Bath,pending
+5-Jul-25,68696d7db9afcd5f4f0cc531,24m 20s,$22.00/hr,$8.93 ,prepay,Minister Bath,pending
+5-Jul-25,68696c1ceca77b9e8aa514e5,24m 14s,$22.00/hr,$8.89 ,prepay,Minister Bath,pending
+5-Jul-25,6869418e2e30ad2a6b0a9e1e,24m 45s,$22.00/hr,$9.08 ,prepay,Minister Bath,pending
+5-Jul-25,686937f5ae657c7d0208fb4a,24m 24s,$22.00/hr,$8.95 ,prepay,Minister Bath,pending
+5-Jul-25,686931579a6bf25af4e0a471,24m 58s,$22.00/hr,$9.16 ,prepay,Minister Bath,pending
+5-Jul-25,68692b5fe414be392a4f85e2,24m 22s,$22.00/hr,$8.94 ,prepay,Minister Bath,pending
+5-Jul-25,68690fa53272c77f8d6a9291,24m 8s,$22.00/hr,$8.85 ,prepay,Minister Bath,pending
+5-Jul-25,6868f5fe265698fdb04da2cc,24m 56s,$22.00/hr,$9.15 ,prepay,Minister Bath,pending
+5-Jul-25,6868f6079884fe58fdc36973,11s,$6.60/hr,$0.02 ,overtimePay,Minister Bath,pending
+5-Jul-25,6868f6079884fe58fdc36973,25m ,$22.00/hr,$9.17 ,prepay,Minister Bath,pending
+5-Jul-25,6868f03155d9ac72fcbb6445,24m 6s,$22.00/hr,$8.84 ,prepay,Minister Bath,pending
+5-Jul-25,6868e6e2fdc25b75b70e53fa,24m 15s,$22.00/hr,$8.89 ,prepay,Minister Bath,pending
+5-Jul-25,6868e3fb201e5563c7ea56d1,24m 9s,$22.00/hr,$8.86 ,prepay,Minister Bath,pending
+5-Jul-25,6868a984fdc25b75b70c7e96,1m 23s,$6.60/hr,$0.15 ,overtimePay,Minister Bath,pending
+5-Jul-25,6868a984fdc25b75b70c7e96,25m ,$22.00/hr,$9.17 ,prepay,Minister Bath,pending
+5-Jul-25,6868c6e6815e4ef41710588d,24m 5s,$22.00/hr,$8.83 ,prepay,Minister Bath,pending
+5-Jul-25,6868cce4d05652721259be46,24m 17s,$22.00/hr,$8.91 ,prepay,Minister Bath,pending
+5-Jul-25,686861f26a1d828cfb9f50e8,24m 40s,$22.00/hr,$9.05 ,prepay,Minister Bath,pending
+4-Jul-25,68673adb11067a8031c639af,24m 29s,$22.00/hr,$8.98 ,prepay,Minister Bath,pending
+4-Jul-25,68673ade4daf13133cd0f397,8m 56s,$22.00/hr,$3.28 ,prepay,Minister Bath,pending
+4-Jul-25,68673adb1ab959e7fea2448a,24m 24s,$22.00/hr,$8.95 ,prepay,Minister Bath,pending
+4-Jul-25,68673ad11ab959e7fea241ba,24m 17s,$22.00/hr,$8.91 ,prepay,Minister Bath,pending
+4-Jul-25,68673adff5af2469e3349f60,18m 25s,$22.00/hr,$6.76 ,prepay,Minister Bath,pending
+4-Jul-25,68673ad9b18aaa756202c662,15m 5s,$22.00/hr,$5.53 ,prepay,Minister Bath,pending
+4-Jul-25,68673ad30d26a258bbfe630e,9m 28s,$22.00/hr,$3.48 ,prepay,Minister Bath,pending
+4-Jul-25,68673ad39b764f1e888f63d9,24m 12s,$22.00/hr,$8.87 ,prepay,Minister Bath,pending
+4-Jul-25,68673ae4b22e77178cbef7ea,24m 24s,$22.00/hr,$8.95 ,prepay,Minister Bath,pending
+4-Jul-25,68673ad14daf13133cd0efc5,8m 4s,$22.00/hr,$2.96 ,prepay,Minister Bath,pending
+4-Jul-25,68673ae23956c8f906776023,24m 20s,$22.00/hr,$8.92 ,prepay,Minister Bath,pending
+4-Jul-25,68673ae5a19f323e362c07da,8m 5s,$22.00/hr,$2.97 ,prepay,Minister Bath,pending
+4-Jul-25,68673acf8f92245334dc1095,13m 28s,$22.00/hr,$4.94 ,prepay,Minister Bath,pending
+4-Jul-25,68673aeb6fb33856806fd3f3,24m 13s,$22.00/hr,$8.88 ,prepay,Minister Bath,pending
+4-Jul-25,68673aed4daf13133cd0fafb,8m 5s,$22.00/hr,$2.97 ,prepay,Minister Bath,pending
+4-Jul-25,68673abfb3a59f3852d1d120,24m 12s,$22.00/hr,$8.88 ,prepay,Minister Bath,pending
+4-Jul-25,68673aceb22e77178cbef013,24m 38s,$22.00/hr,$9.03 ,prepay,Minister Bath,pending
+4-Jul-25,68673abe8f92245334dc0c67,10m 50s,$22.00/hr,$3.98 ,prepay,Minister Bath,pending
+4-Jul-25,68673ae3f6ec50757812e1dc,8m 6s,$22.00/hr,$2.98 ,prepay,Minister Bath,pending
+4-Jul-25,68673ae8443837410f40baf3,9m 14s,$22.00/hr,$3.39 ,prepay,Minister Bath,pending
+4-Jul-25,68673ae3befcc37cb6cd3a6d,24m 43s,$22.00/hr,$9.06 ,prepay,Minister Bath,pending
+4-Jul-25,68671e12d7d942555fe1a7f5,24m 49s,$22.00/hr,$9.10 ,prepay,Minister Bath,pending
+4-Jul-25,68671dd3a6cf58184120c1cc,9m 37s,$22.00/hr,$3.53 ,prepay,Minister Bath,pending
+3-Jul-25,68656d09ed73429e2a10dc60,10m 51s,$22.00/hr,$3.98 ,prepay,Minister Bath,pending
+3-Jul-25,68656c7523b18c607bd7b83e,24m 27s,$22.00/hr,$8.97 ,prepay,Minister Bath,pending
+3-Jul-25,68656c74dae4882dc7c01a55,8m 8s,$22.00/hr,$2.98 ,prepay,Minister Bath,pending
+3-Jul-25,68656c7423b18c607bd7b79d,11m 36s,$22.00/hr,$4.26 ,prepay,Minister Bath,pending
+3-Jul-25,68664d70df06ab7853ccc71e,1m 12s,$6.60/hr,$0.13 ,overtimePay,Minister Bath,pending
+3-Jul-25,68664d70df06ab7853ccc71e,25m ,$22.00/hr,$9.17 ,prepay,Minister Bath,pending
+3-Jul-25,68664c9e5ce64faa5d874778,8m 28s,$22.00/hr,$3.11 ,prepay,Minister Bath,pending
+3-Jul-25,68663f592fa7abe02c81697b,1m 21s,$6.60/hr,$0.15 ,overtimePay,Minister Bath,pending
+3-Jul-25,68663f592fa7abe02c81697b,25m ,$22.00/hr,$9.17 ,prepay,Minister Bath,pending
+3-Jul-25,6866203696ba18723fc69b84,8m 6s,$22.00/hr,$2.97 ,prepay,Minister Bath,pending
+3-Jul-25,68661d6e8fab0a4942060689,10m 15s,$22.00/hr,$3.76 ,prepay,Minister Bath,pending
+2-Jul-25,68656c75f8710b706e60e7f4,15m 13s,$22.00/hr,$5.58 ,prepay,Minister Bath,pending
+2-Jul-25,6865622acdf88467fb4347c5,19m 20s,$22.00/hr,$7.09 ,prepay,Minister Bath,pending
+2-Jul-25,68655d3b9015e342e362414e,16s,$6.60/hr,$0.03 ,overtimePay,Minister Bath,pending
+2-Jul-25,68655d3b9015e342e362414e,20m ,$22.00/hr,$7.33 ,prepay,Minister Bath,pending
+2-Jul-25,68650d569015e342e35cc3e7,19m 37s,$22.00/hr,$7.20 ,prepay,Minister Bath,pending
+2-Jul-25,68650c8b6eca390080a62d57,19m 9s,$22.00/hr,$7.02 ,prepay,Minister Bath,pending
+2-Jul-25,68644b24100704766dbeedc2,8m 6s,$22.00/hr,$2.97 ,prepay,Minister Bath,pending
+2-Jul-25,68644b28c175185062dfcca1,19m 28s,$22.00/hr,$7.14 ,prepay,Minister Bath,pending
+2-Jul-25,68644b22af63f1ac35dcd1cf,19m 25s,$22.00/hr,$7.13 ,prepay,Minister Bath,pending
+2-Jul-25,68644b21e14fee348e21fdc4,8m 18s,$22.00/hr,$3.05 ,prepay,Minister Bath,pending
+2-Jul-25,6864f9d71588049dfe5c3855,19m 28s,$22.00/hr,$7.14 ,prepay,Minister Bath,pending
+2-Jul-25,68644af4fc455c877224af03,19m 34s,$22.00/hr,$7.18 ,prepay,Minister Bath,pending
+2-Jul-25,6864ed6dc8dcbd27daa8acc3,19m 19s,$22.00/hr,$7.08 ,prepay,Minister Bath,pending
+2-Jul-25,68644af492a1eb67cad8f8a6,8m 5s,$22.00/hr,$2.97 ,prepay,Minister Bath,pending
+2-Jul-25,68644b2942491e6e7479a5a3,5m 47s,$22.00/hr,$2.13 ,prepay,Minister Bath,pending
+2-Jul-25,68644b22100704766dbeedb5,8m 56s,$22.00/hr,$3.28 ,prepay,Minister Bath,pending
+2-Jul-25,68644b2823d5f80aa40298b8,19m 36s,$22.00/hr,$7.19 ,prepay,Minister Bath,pending
+2-Jul-25,6864d9e69015e342e35b5751,8m 41s,$22.00/hr,$3.19 ,prepay,Minister Bath,pending
+2-Jul-25,68644acf4e37346d14cce729,19m 35s,$22.00/hr,$7.18 ,prepay,Minister Bath,pending
+2-Jul-25,68644afc787c0ce10ad1bcd0,7m 12s,$22.00/hr,$2.65 ,prepay,Minister Bath,pending
+2-Jul-25,6864b05b65cfece94efde665,19m 40s,$22.00/hr,$7.22 ,prepay,Minister Bath,pending
+2-Jul-25,68644ae0b8fbcf41d87caa04,8s,$6.60/hr,$0.02 ,overtimePay,Minister Bath,pending
+2-Jul-25,68644ae0b8fbcf41d87caa04,20m ,$22.00/hr,$7.33 ,prepay,Minister Bath,pending
+2-Jul-25,68644af31eaf5258ec094a55,3m 11s,$22.00/hr,$1.17 ,prepay,Minister Bath,pending
+2-Jul-25,68649c27b5e2cb7b0cb8e13e,22s,$6.60/hr,$0.04 ,overtimePay,Minister Bath,pending
+2-Jul-25,68649c27b5e2cb7b0cb8e13e,20m ,$22.00/hr,$7.33 ,prepay,Minister Bath,pending
+2-Jul-25,68644acf1eaf5258ec094865,19m 50s,$22.00/hr,$7.27 ,prepay,Minister Bath,pending
+2-Jul-25,68644b274e37346d14cce9e1,19m 29s,$22.00/hr,$7.15 ,prepay,Minister Bath,pending
+1-Jul-25,686420f81188d983d8c8a924,,$6.60/hr,$0.00 ,overtimePay,Minister Bath,pending
+1-Jul-25,686420f81188d983d8c8a924,20m ,$22.00/hr,$7.33 ,prepay,Minister Bath,pending
+1-Jul-25,68636d5d5cb9ebe39764e80f,7m 44s,$6.60/hr,$0.85 ,overtimePay,Minister Bath,pending
+1-Jul-25,68636d5d5cb9ebe39764e80f,25m ,$22.00/hr,$9.17 ,prepay,Minister Bath,pending
+1-Jul-25,68636d5e0b50ae366bf0ffb4,24m 16s,$22.00/hr,$8.90 ,prepay,Minister Bath,pending
+1-Jul-25,68636d76462606af9bda8da3,24m 25s,$22.00/hr,$8.96 ,prepay,Minister Bath,pending
+1-Jul-25,68636d61e8a82404fc14f14d,24m 16s,$22.00/hr,$8.90 ,prepay,Minister Bath,pending
+1-Jul-25,68636d66a6d7af8b9e80e0f8,24m 49s,$22.00/hr,$9.10 ,prepay,Minister Bath,pending
+1-Jul-25,68636d5de2856bfac7b0c274,24m 16s,$22.00/hr,$8.90 ,prepay,Minister Bath,pending
+1-Jul-25,68636d67702670673f441245,24m 11s,$22.00/hr,$8.87 ,prepay,Minister Bath,pending
+1-Jul-25,68636d172dcdc1cc79f4ad57,24m 13s,$22.00/hr,$8.88 ,prepay,Minister Bath,pending
+1-Jul-25,68636d58e2856bfac7b0c237,24m 36s,$22.00/hr,$9.02 ,prepay,Minister Bath,pending
+1-Jul-25,68636d672fc2683eba7fd0ee,24m 11s,$22.00/hr,$8.87 ,prepay,Minister Bath,pending
+1-Jul-25,68636d4851d64a37f70fcf6d,24m 17s,$22.00/hr,$8.90 ,prepay,Minister Bath,pending
+1-Jul-25,68631a4e4209ac693593501c,9m 48s,$6.60/hr,$1.08 ,overtimePay,Minister Bath,pending
+1-Jul-25,68631a4e4209ac693593501c,25m ,$22.00/hr,$9.17 ,prepay,Minister Bath,pending
+1-Jul-25,68631a57e42f9fcf1aed5e40,24m 30s,$22.00/hr,$8.99 ,prepay,Minister Bath,pending
+1-Jul-25,68631a4e769f31253fe1d29d,24m 29s,$22.00/hr,$8.98 ,prepay,Minister Bath,pending
+1-Jul-25,68631a23487ff33fd6705a94,7s,$6.60/hr,$0.01 ,overtimePay,Minister Bath,pending
+1-Jul-25,68631a23487ff33fd6705a94,25m ,$22.00/hr,$9.17 ,prepay,Minister Bath,pending
+30-Jun-25,686177f6a4b0398f0e14d589,24m 22s,$22.00/hr,$8.94 ,prepay,Minister Bath,processed
+30-Jun-25,686177ecbd8d849725bda6bd,12m 25s,$6.60/hr,$1.37 ,overtimePay,Minister Bath,processed
+30-Jun-25,686177ecbd8d849725bda6bd,25m ,$22.00/hr,$9.17 ,prepay,Minister Bath,processed
+29-Jun-25,685f1bb8742d5a275d2c6c7c,24m 26s,$22.00/hr,$8.96 ,prepay,Minister Bath,processed
+29-Jun-25,685f1bb9d5fd119c4793a494,24m 24s,$22.00/hr,$8.95 ,prepay,Minister Bath,processed
+29-Jun-25,685f1bc05890540958198b82,10m 26s,$6.60/hr,$1.15 ,overtimePay,Minister Bath,processed
+29-Jun-25,685f1bc05890540958198b82,25m ,$22.00/hr,$9.17 ,prepay,Minister Bath,processed
+28-Jun-25,685f1bcb5f33bbf26b0e25b6,14m 25s,$6.60/hr,$1.59 ,overtimePay,Minister Bath,processed
+28-Jun-25,685f1bcb5f33bbf26b0e25b6,25m ,$22.00/hr,$9.17 ,prepay,Minister Bath,processed
+28-Jun-25,685f1bd62b5899acf7b87f41,24m 22s,$22.00/hr,$8.94 ,prepay,Minister Bath,processed
+28-Jun-25,685f1bc5214a83846e865ed9,14m 2s,$6.60/hr,$1.55 ,overtimePay,Minister Bath,processed
+28-Jun-25,685f1bc5214a83846e865ed9,25m ,$22.00/hr,$9.17 ,prepay,Minister Bath,processed
+25-Jun-25,685b671da0297b863c534eb7,24m 15s,$22.00/hr,$8.89 ,prepay,Minister Bath,processed
+25-Jun-25,685bba63ba9010a2afa78629,25m ,$6.60/hr,$2.75 ,trainingTask,Minister Bath,processed
+22-Jun-25,6856ff12bbb8c4b5ef3cf6a3,29m 4s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+20-Jun-25,685309ed1d9d1f638cbf267f,29m 6s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+20-Jun-25,685309cdb7be362fc8b7b95a,29m 8s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+20-Jun-25,68530a11576dfe5fea1d7520,10s,$2.25/hr,$0.01 ,overtimePay,multilingual_static_comparison_v2,processed
+20-Jun-25,68530a11576dfe5fea1d7520,30m ,$7.50/hr,$3.75 ,prepay,multilingual_static_comparison_v2,processed
+20-Jun-25,685309fbc47cbf6eb0da4741,25m 26s,$7.50/hr,$3.18 ,prepay,multilingual_static_comparison_v2,processed
+20-Jun-25,685309eab9bf967a4582e6e7,28m 51s,$7.50/hr,$3.61 ,prepay,multilingual_static_comparison_v2,processed
+20-Jun-25,6853098eef931f7fddc1a069,29m 17s,$7.50/hr,$3.66 ,prepay,multilingual_static_comparison_v2,processed
+20-Jun-25,685309fdded5d8b3902c8d12,29m 7s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+20-Jun-25,685309ee227b3d3aea1a6b6d,27m 51s,$7.50/hr,$3.48 ,prepay,multilingual_static_comparison_v2,processed
+20-Jun-25,685309fdd7050b9d29692e63,29m 4s,$7.50/hr,$3.63 ,prepay,multilingual_static_comparison_v2,processed
+20-Jun-25,685309f5ded5d8b3902c8be4,29m 32s,$7.50/hr,$3.69 ,prepay,multilingual_static_comparison_v2,processed
+20-Jun-25,685309ab61e2202a4bac47d9,29m 6s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+19-Jun-25,685309f05a0b4af90ad838e9,29m 5s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+19-Jun-25,685309d5f0dbd0e9bb77e910,29m 26s,$7.50/hr,$3.68 ,prepay,multilingual_static_comparison_v2,processed
+19-Jun-25,685309efe75f98b2fa9dcb12,29m 4s,$7.50/hr,$3.63 ,prepay,multilingual_static_comparison_v2,processed
+19-Jun-25,6853097c1a08b3fdb0d1d4c0,28m 59s,$7.50/hr,$3.62 ,prepay,multilingual_static_comparison_v2,processed
+19-Jun-25,685309f1768c2219fc776f00,29m 9s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+19-Jun-25,68530962fbf41d76a9045517,29m 21s,$7.50/hr,$3.67 ,prepay,multilingual_static_comparison_v2,processed
+19-Jun-25,685309845a0b4af90ad830c6,29m 21s,$7.50/hr,$3.67 ,prepay,multilingual_static_comparison_v2,processed
+19-Jun-25,6853096ec47cbf6eb0da3e3f,29m 5s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+19-Jun-25,685309d8fbf41d76a904619b,29m 4s,$7.50/hr,$3.63 ,prepay,multilingual_static_comparison_v2,processed
+18-Jun-25,6852a5f2af891736661df0ba,29m 43s,$7.50/hr,$3.72 ,prepay,multilingual_static_comparison_v2,processed
+18-Jun-25,6852a57e805e5d130b0e71cc,29m 26s,$7.50/hr,$3.68 ,prepay,multilingual_static_comparison_v2,processed
+18-Jun-25,6852a5e5fdaedd3d3d17a04a,29m 25s,$7.50/hr,$3.68 ,prepay,multilingual_static_comparison_v2,processed
+18-Jun-25,6852a61b777ab66d6469c857,27m 16s,$7.50/hr,$3.41 ,prepay,multilingual_static_comparison_v2,processed
+18-Jun-25,6852a5dbb4ac24e9786361fc,29m 3s,$7.50/hr,$3.63 ,prepay,multilingual_static_comparison_v2,processed
+17-Jun-25,68518e8e91e0076f7cb6d43d,29m 3s,$7.50/hr,$3.63 ,prepay,multilingual_static_comparison_v2,processed
+17-Jun-25,68518e9cd6443ce653f0bf5a,29m 15s,$7.50/hr,$3.66 ,prepay,multilingual_static_comparison_v2,processed
+17-Jun-25,68518ea2135672924b7f83c9,29m 7s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+17-Jun-25,68518eb32dd045836f9a1b46,29m 24s,$7.50/hr,$3.68 ,prepay,multilingual_static_comparison_v2,processed
+17-Jun-25,68518e8add91bc7de6aef7c1,29m 6s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+17-Jun-25,68518e8bf2c00e673d09bcc7,29m 17s,$7.50/hr,$3.66 ,prepay,multilingual_static_comparison_v2,processed
+17-Jun-25,68518e90135672924b7f8285,2m 29s,$2.25/hr,$0.09 ,overtimePay,multilingual_static_comparison_v2,processed
+17-Jun-25,68518e90135672924b7f8285,30m ,$7.50/hr,$3.75 ,prepay,multilingual_static_comparison_v2,processed
+17-Jun-25,68518e87386b01588efeec70,29m 11s,$7.50/hr,$3.65 ,prepay,multilingual_static_comparison_v2,processed
+17-Jun-25,68518eb1f2c00e673d09bf8b,29m 4s,$7.50/hr,$3.63 ,prepay,multilingual_static_comparison_v2,processed
+17-Jun-25,6850a4d5dddecfff604ffffc,29m 17s,$7.50/hr,$3.66 ,prepay,multilingual_static_comparison_v2,processed
+17-Jun-25,6850a556778056552ee0999b,29m 3s,$7.50/hr,$3.63 ,prepay,multilingual_static_comparison_v2,processed
+17-Jun-25,6850a4d80b10005944f8709e,28m 52s,$7.50/hr,$3.61 ,prepay,multilingual_static_comparison_v2,processed
+17-Jun-25,6850a4d841383b7938727707,29m 13s,$7.50/hr,$3.65 ,prepay,multilingual_static_comparison_v2,processed
+17-Jun-25,6850a4da67ce7f8f33f288ee,29m 9s,$7.50/hr,$3.65 ,prepay,multilingual_static_comparison_v2,processed
+17-Jun-25,6850a4d41f73207e0f3c728d,29m 8s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+16-Jun-25,684f2e4513156b19a785ac11,29m 28s,$7.50/hr,$3.69 ,prepay,multilingual_static_comparison_v2,processed
+16-Jun-25,684efd227abe743257cbe280,29m 13s,$7.50/hr,$3.65 ,prepay,multilingual_static_comparison_v2,processed
+16-Jun-25,684f2d73e7fc1873cbbf4458,29m 4s,$7.50/hr,$3.63 ,prepay,multilingual_static_comparison_v2,processed
+16-Jun-25,684efd29d02c3b714d77d2c9,29m 2s,$7.50/hr,$3.63 ,prepay,multilingual_static_comparison_v2,processed
+16-Jun-25,684f2d72560c3ba47b3e51fb,29m 3s,$7.50/hr,$3.63 ,prepay,multilingual_static_comparison_v2,processed
+16-Jun-25,684f2d9a4b8af68e77dfe768,29m 52s,$7.50/hr,$3.73 ,prepay,multilingual_static_comparison_v2,processed
+16-Jun-25,684f2d8fa2b7adc6855d4315,6s,$2.25/hr,$0.00 ,overtimePay,multilingual_static_comparison_v2,processed
+16-Jun-25,684f2d8fa2b7adc6855d4315,30m ,$7.50/hr,$3.75 ,prepay,multilingual_static_comparison_v2,processed
+15-Jun-25,684a1bfedb3b0f65088005fa,28m 2s,$7.50/hr,$3.51 ,prepay,multilingual_static_comparison_v2,processed
+15-Jun-25,684a1c2017fbbc990ea84562,29m 2s,$7.50/hr,$3.63 ,prepay,multilingual_static_comparison_v2,processed
+15-Jun-25,684a1c019a1fc8ba8c20c0c5,29m 4s,$7.50/hr,$3.63 ,prepay,multilingual_static_comparison_v2,processed
+15-Jun-25,684a1bd1db3b0f65087ff949,29m 8s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+15-Jun-25,684a1c1da74e478eb9482eba,29m 4s,$7.50/hr,$3.63 ,prepay,multilingual_static_comparison_v2,processed
+15-Jun-25,684a1ba1cbb0ca419d3d6ced,29m 40s,$7.50/hr,$3.71 ,prepay,multilingual_static_comparison_v2,processed
+15-Jun-25,684a1bd821bd55fb7ba670b5,29m 15s,$7.50/hr,$3.66 ,prepay,multilingual_static_comparison_v2,processed
+15-Jun-25,684a1bee1783ef80e4a76454,29m 24s,$7.50/hr,$3.68 ,prepay,multilingual_static_comparison_v2,processed
+15-Jun-25,684a1bdc7ea6c2920898350b,29m 1s,$7.50/hr,$3.63 ,prepay,multilingual_static_comparison_v2,processed
+15-Jun-25,684a1c475984ea9eda5d1b7f,29m 5s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+15-Jun-25,684a1c0b831daf696e1c1d3d,29m 6s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+14-Jun-25,684a1b9d21bd55fb7ba65e35,29m 30s,$7.50/hr,$3.69 ,prepay,multilingual_static_comparison_v2,processed
+14-Jun-25,684a1c29a5abda8363b98d51,29m 7s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+14-Jun-25,684a1ba5ac2f6ffa24e4f87b,29m 5s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+14-Jun-25,684a1c29c7ba0c79d59c7083,29m 6s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+14-Jun-25,684a1bfe8317b4472d590921,29m 9s,$7.50/hr,$3.65 ,prepay,multilingual_static_comparison_v2,processed
+14-Jun-25,684a1bee67cec0aa327ab09c,29m 30s,$7.50/hr,$3.69 ,prepay,multilingual_static_comparison_v2,processed
+14-Jun-25,684a1c07c97f8425e49d4317,29m 29s,$7.50/hr,$3.69 ,prepay,multilingual_static_comparison_v2,processed
+14-Jun-25,684a1c13cfbee4fe34902d41,29m 4s,$7.50/hr,$3.63 ,prepay,multilingual_static_comparison_v2,processed
+14-Jun-25,684a1bde0a6e47f6db8217ab,29m 14s,$7.50/hr,$3.65 ,prepay,multilingual_static_comparison_v2,processed
+14-Jun-25,684a1c4921bd55fb7ba6948e,29m 29s,$7.50/hr,$3.69 ,prepay,multilingual_static_comparison_v2,processed
+14-Jun-25,684a1bb81783ef80e4a74954,29m 8s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+13-Jun-25,684a1bcbe425f49512a84e17,29m 22s,$7.50/hr,$3.67 ,prepay,multilingual_static_comparison_v2,processed
+13-Jun-25,684a1bacc7ba0c79d59c533e,29m 22s,$7.50/hr,$3.67 ,prepay,multilingual_static_comparison_v2,processed
+13-Jun-25,684a1c29cbb0ca419d3d91da,29m 21s,$7.50/hr,$3.67 ,prepay,multilingual_static_comparison_v2,processed
+13-Jun-25,684a1bfe0e09a43699eb935d,29m 39s,$7.50/hr,$3.71 ,prepay,multilingual_static_comparison_v2,processed
+13-Jun-25,684a1c01f6b410bd1c4bfd7d,27m 34s,$7.50/hr,$3.45 ,prepay,multilingual_static_comparison_v2,processed
+13-Jun-25,684a1bff0e09a43699eb939a,29m 26s,$7.50/hr,$3.68 ,prepay,multilingual_static_comparison_v2,processed
+13-Jun-25,684a1c39dc8b7c5a4d9a777e,29m 4s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+13-Jun-25,68499a35be75ca823dcfb0c6,28m 57s,$7.50/hr,$3.62 ,prepay,multilingual_static_comparison_v2,processed
+13-Jun-25,68499a4cbe75ca823dcfb2f1,29m 6s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+13-Jun-25,68499a64c1d6168872393d32,29m 8s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+13-Jun-25,68499a787ecce7094eced642,29m 15s,$7.50/hr,$3.66 ,prepay,multilingual_static_comparison_v2,processed
+13-Jun-25,68499a285ee7e697ad0d2037,29m 6s,$7.50/hr,$3.64 ,prepay,multilingual_static_comparison_v2,processed
+13-Jun-25,68499a6e8960aac8ff7a8cbd,29m 20s,$7.50/hr,$3.67 ,prepay,multilingual_static_comparison_v2,processed
+13-Jun-25,68499a6f0e250a80520e64ed,29m 13s,$7.50/hr,$3.65 ,prepay,multilingual_static_comparison_v2,processed
+12-Jun-25,68499faf5e73e507030d9948,34m 29s,$7.50/hr,$4.31 ,prepay,multilingual_static_comparison_v2,processed
+12-Jun-25,68499fb053b4f5d3e1618263,34m 17s,$7.50/hr,$4.29 ,prepay,multilingual_static_comparison_v2,processed
+12-Jun-25,68499fae92a0c3a32e0cfd3f,34m 44s,$7.50/hr,$4.34 ,prepay,multilingual_static_comparison_v2,processed
+12-Jun-25,68499fadc1d6168872398768,34m 7s,$7.50/hr,$4.27 ,prepay,multilingual_static_comparison_v2,processed
+28-Mar-25,67e68bc2d9781fb2cfbfbd4d,8m 35s,$8.25/hr,$1.18 ,overtimePay,beetle_crown,processed
+28-Mar-25,67e68bc2d9781fb2cfbfbd4d,30m ,$27.50/hr,$13.75 ,prepay,beetle_crown,processed
+28-Mar-25,67e584e8b194202877f2b62c,10m 1s,$8.25/hr,$1.38 ,overtimePay,beetle_crown,processed
+28-Mar-25,67e584e8b194202877f2b62c,30m ,$27.50/hr,$13.75 ,prepay,beetle_crown,processed
+28-Mar-25,67e584e7d330cd3a7c3abfa8,6s,$8.25/hr,$0.02 ,overtimePay,beetle_crown,processed
+28-Mar-25,67e584e7d330cd3a7c3abfa8,30m ,$27.50/hr,$13.75 ,prepay,beetle_crown,processed
+28-Mar-25,67e584e6921174db13115a22,29m 49s,$27.50/hr,$13.67 ,prepay,beetle_crown,processed
+26-Mar-25,67d9b376875d846178e42d05,-,-,$0.00 ,payAdjustment,green_wizards_v2,processed
+20-Mar-25,67db22859d1da70f09fe6d38,-,-,$165.00 ,missionReward,-,processed
+20-Mar-25,67daf3fad34c87512f0c0926,1h 16m 50s,$27.50/hr,$35.22 ,prepay,green_wizards_v2,processed
+20-Mar-25,67da7308607e37dd4d837602,-,-,$11.00 ,missionReward,-,processed
+20-Mar-25,67daf4f7a8cb38cc339986a2,1h 15m 57s,$27.50/hr,$34.82 ,prepay,green_wizards_v2,processed
+20-Mar-25,67daf320e31f45be1e68a284,1m 52s,$8.25/hr,$0.26 ,overtimePay,green_wizards_v2,processed
+20-Mar-25,67daf320e31f45be1e68a284,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards_v2,processed
+19-Mar-25,67daf4868d11bc8fd31dc3ba,5m 3s,$8.25/hr,$0.69 ,overtimePay,Ordination Knight,processed
+19-Mar-25,67daf4868d11bc8fd31dc3ba,1h 25m 3s,$1.60/hr,$36.67 ,prepay,Ordination Knight,processed
+19-Mar-25,67daf5fc8d11bc8fd31de935,1h 16m 24s,$27.50/hr,$35.02 ,prepay,green_wizards_v2,processed
+19-Mar-25,67d9b376875d846178e42d05,1h 19m 20s,$27.50/hr,$36.36 ,prepay,green_wizards_v2,processed
+19-Mar-25,67da85da6eeed0a0870f0ed9,38m 29s,$8.25/hr,$5.29 ,trainingTask,green_wizards_v2,processed
+18-Mar-25,67d9d217740721b62c0da2a3,50m 50s,$8.25/hr,$6.99 ,trainingTask,green_wizards_v2,processed
+18-Mar-25,67d9c64732215e0285c0b3e5,49m 42s,$8.25/hr,$6.83 ,trainingTask,green_wizards_v2,processed
+17-Mar-25,67d4590aeae5e67c91640e9d,-,-,$0.00 ,payAdjustment,red_wizards,processed
+17-Mar-25,67cde2ab8e6ddf940ddf1b55,-,-,$0.09 ,payAdjustment,red_wizards,processed
+17-Mar-25,67cf7280e3788251f4177379,-,-,$0.10 ,payAdjustment,red_wizards,processed
+16-Mar-25,67d5276b6f1ce03550dca8e5,-,-,$27.50 ,missionReward,-,processed
+15-Mar-25,67d58f7d98f27b7f42d4b5f8,1h 59m ,$27.50/hr,$54.54 ,prepay,red_wizards,processed
+15-Mar-25,67d58f6dc78099bb78c851ab,1h 56m 37s,$27.50/hr,$53.46 ,prepay,red_wizards,processed
+15-Mar-25,67d58f67cab6b963d1729c98,1h 57m 54s,$27.50/hr,$54.04 ,prepay,red_wizards,processed
+15-Mar-25,67d45936555daabeaa2dae5c,17s,$8.25/hr,$0.04 ,overtimePay,red_wizards,processed
+15-Mar-25,67d45936555daabeaa2dae5c,2h ,$27.50/hr,$55.00 ,prepay,red_wizards,processed
+15-Mar-25,67d5754fa7b66f685f28a66b,1h 38m 31s,$27.50/hr,$45.16 ,qaOperation,red_wizards,processed
+15-Mar-25,67d55da35f38a33b825af1c2,1h 8m 28s,$27.50/hr,$31.39 ,qaOperation,red_wizards,processed
+15-Mar-25,67d458c45da1c590e175b3d3,1h 57m 54s,$27.50/hr,$54.04 ,prepay,red_wizards,processed
+15-Mar-25,67d3d5dcfeef2279f35542fb,-,-,$11.00 ,missionReward,-,processed
+15-Mar-25,67d4590aeae5e67c91640e9d,5m 20s,$8.25/hr,$0.73 ,overtimePay,red_wizards,processed
+15-Mar-25,67d4590aeae5e67c91640e9d,2h ,$27.50/hr,$55.00 ,prepay,red_wizards,processed
+15-Mar-25,67d458e3e71112e753179d04,1h 56m 41s,$27.50/hr,$53.49 ,prepay,red_wizards,processed
+14-Mar-25,67cfc2439d4981a20bac3f5e,1h 48m 26s,$1.60/hr,$49.71 ,prepay,Ordination Knight,processed
+14-Mar-25,67cfc24561328778e92565b1,1m 46s,$8.25/hr,$0.24 ,overtimePay,Ordination Knight,processed
+14-Mar-25,67cfc24561328778e92565b1,2h 1m 46s,$1.60/hr,$55.00 ,prepay,Ordination Knight,processed
+14-Mar-25,67cfc23c9d4981a20bac3ef7,39s,$8.25/hr,$0.09 ,overtimePay,Ordination Knight,processed
+14-Mar-25,67cfc23c9d4981a20bac3ef7,2h 0m 39s,$1.60/hr,$55.00 ,prepay,Ordination Knight,processed
+13-Mar-25,67d284e5798bf7f39e568a2d,-,-,$79.75 ,missionReward,-,processed
+13-Mar-25,67d334574f0f8ffe641ef0b1,2m 21s,$8.25/hr,$0.32 ,overtimePay,red_wizards,processed
+13-Mar-25,67d334574f0f8ffe641ef0b1,2h ,$27.50/hr,$55.00 ,prepay,red_wizards,processed
+13-Mar-25,67d27b88b77bf650298d5a8c,-,-,$19.25 ,missionReward,-,processed
+13-Mar-25,67d2a238bfd5f0210c3c5f91,4m 24s,$8.25/hr,$0.61 ,overtimePay,red_wizards,processed
+13-Mar-25,67d2a238bfd5f0210c3c5f91,2h ,$27.50/hr,$55.00 ,prepay,red_wizards,processed
+13-Mar-25,67d2a224a2aff917e13f2c91,1h 59m 23s,$1.60/hr,$54.72 ,prepay,Ordination Knight,processed
+13-Mar-25,67d2a22d96d1e6a90a0ad2ad,1h 59m 9s,$1.60/hr,$54.61 ,prepay,Ordination Knight,processed
+13-Mar-25,67d2a23015f3fd97d33314e7,1h 58m 44s,$1.60/hr,$54.43 ,prepay,Ordination Knight,processed
+13-Mar-25,67cfc23eae3f1e3e84548dda,7s,$8.25/hr,$0.02 ,overtimePay,Ordination Knight,processed
+13-Mar-25,67cfc23eae3f1e3e84548dda,2h 0m 7s,$1.60/hr,$55.00 ,prepay,Ordination Knight,processed
+13-Mar-25,67cfc236b5e187af86c592dc,1h 59m 16s,$1.60/hr,$54.67 ,prepay,Ordination Knight,processed
+13-Mar-25,67d1333af10abd9f8814ed01,-,-,$79.75 ,missionReward,-,processed
+13-Mar-25,67cfc23360fb42bcd952e7de,1h 59m 25s,$27.50/hr,$54.74 ,prepay,red_wizards,processed
+13-Mar-25,67d20262064e8782083fff02,16s,$8.25/hr,$0.04 ,overtimePay,red_wizards,processed
+13-Mar-25,67d20262064e8782083fff02,2h ,$27.50/hr,$55.00 ,prepay,red_wizards,processed
+12-Mar-25,67cf72929b924aa1a1b0650f,9m 59s,$8.25/hr,$1.37 ,overtimePay,red_wizards,processed
+12-Mar-25,67cf72929b924aa1a1b0650f,2h ,$27.50/hr,$55.00 ,prepay,red_wizards,processed
+12-Mar-25,67cf7254d09c8d7975e2d249,1h 59m 4s,$1.60/hr,$54.58 ,prepay,Ordination Knight,processed
+12-Mar-25,67cf725065a43142c6198bec,6m 43s,$8.25/hr,$0.92 ,overtimePay,Ordination Knight,processed
+12-Mar-25,67cf725065a43142c6198bec,2h 6m 43s,$1.60/hr,$55.00 ,prepay,Ordination Knight,processed
+12-Mar-25,67cf7296c6f3e0daa2c34b27,1h 59m 41s,$1.60/hr,$54.86 ,prepay,Ordination Knight,processed
+12-Mar-25,67cf726b890104a32c958a64,1h 59m 21s,$1.60/hr,$54.71 ,prepay,Ordination Knight,processed
+12-Mar-25,67cfe097b5101518d5ae6f02,-,-,$79.75 ,missionReward,-,processed
+12-Mar-25,67cf7274689171cd58b760f9,21m 7s,$8.25/hr,$2.90 ,overtimePay,Ordination Knight,processed
+12-Mar-25,67cf7274689171cd58b760f9,2h 21m 7s,$1.60/hr,$55.00 ,prepay,Ordination Knight,processed
+12-Mar-25,67cf727bfa1baeff4c3270ad,1h 50m 6s,$27.50/hr,$50.47 ,prepay,red_wizards,processed
+12-Mar-25,67cf7280e3788251f4177379,2h ,$27.50/hr,$54.90 ,prepay,red_wizards,processed
+11-Mar-25,67cf72676a068c1addff7671,1h 59m 32s,$27.50/hr,$54.79 ,prepay,red_wizards,processed
+11-Mar-25,67cf7296aaa9fbe524716738,24m 53s,$8.25/hr,$3.42 ,overtimePay,red_wizards,processed
+11-Mar-25,67cf7296aaa9fbe524716738,2h ,$27.50/hr,$55.00 ,prepay,red_wizards,processed
+11-Mar-25,67cf727ae3788251f41772c5,1h 59m 22s,$27.50/hr,$54.71 ,prepay,red_wizards,processed
+11-Mar-25,67cf728c86e9d664f0c0d969,1m 3s,$8.25/hr,$0.15 ,overtimePay,red_wizards,processed
+11-Mar-25,67cf728c86e9d664f0c0d969,2h ,$27.50/hr,$55.00 ,prepay,red_wizards,processed
+11-Mar-25,67ce9d7b3d55a6098ebd75b0,-,-,$44.00 ,missionReward,-,processed
+11-Mar-25,67cf757e689171cd58b78432,1h 57m 18s,$27.50/hr,$53.77 ,prepay,red_wizards,processed
+10-Mar-25,67cde2b536308fd91486042d,29m 31s,$8.25/hr,$4.06 ,overtimePay,Ordination Knight,processed
+10-Mar-25,67cde2b536308fd91486042d,2h 29m 31s,$1.60/hr,$55.00 ,prepay,Ordination Knight,processed
+10-Mar-25,67cf3d06ae200f80cc5cdb23,53m 18s,$27.50/hr,$24.44 ,qaOperation,red_wizards,processed
+10-Mar-25,67cde2ab8e6ddf940ddf1b55,1m 20s,$8.25/hr,$0.18 ,overtimePay,red_wizards,processed
+10-Mar-25,67cde2ab8e6ddf940ddf1b55,2h ,$27.50/hr,$54.91 ,prepay,red_wizards,processed
+10-Mar-25,67cde2a8fa53046a1a89708f,2m 45s,$8.25/hr,$0.38 ,overtimePay,red_wizards,processed
+10-Mar-25,67cde2a8fa53046a1a89708f,2h ,$27.50/hr,$55.00 ,prepay,red_wizards,processed
+10-Mar-25,67cde29640984d3ede6c3a3c,1h 59m 29s,$27.50/hr,$54.76 ,prepay,red_wizards,processed
+10-Mar-25,67cde27f91063138e8e5a5ff,1h 58m 26s,$27.50/hr,$54.28 ,prepay,red_wizards,processed
+10-Mar-25,67ce59f3555783bc365af003,1h 58m 38s,$27.50/hr,$54.38 ,prepay,red_wizards,processed
+10-Mar-25,67cd4c6255d4c114c147ef3b,-,-,$19.25 ,missionReward,-,processed
+10-Mar-25,67ce59f221851347a4531d21,1h 58m 49s,$27.50/hr,$54.46 ,prepay,red_wizards,processed
+10-Mar-25,67c7cf1f6d542d04ba4cdfc3,-,-,$0.00 ,payAdjustment,green_wizards,processed
+10-Mar-25,67cde2978e6ddf940ddf18ef,22s,$8.25/hr,$0.05 ,overtimePay,red_wizards,processed
+10-Mar-25,67cde2978e6ddf940ddf18ef,2h ,$27.50/hr,$55.00 ,prepay,red_wizards,processed
+9-Mar-25,67cde28516ac1db6330739e9,1h 58m 53s,$27.50/hr,$54.49 ,prepay,red_wizards,processed
+9-Mar-25,67ccf8788e83f84984ef2dbf,36m 41s,$8.25/hr,$5.04 ,overtimePay,red_wizards,processed
+9-Mar-25,67ccf8788e83f84984ef2dbf,2h ,$27.50/hr,$55.00 ,prepay,red_wizards,processed
+9-Mar-25,67ccf7d97604ac78f3d66056,13s,$8.25/hr,$0.03 ,overtimePay,red_wizards,processed
+9-Mar-25,67ccf7d97604ac78f3d66056,2h ,$27.50/hr,$55.00 ,prepay,red_wizards,processed
+8-Mar-25,67caa855e4da41574696537d,-,-,$52.25 ,missionReward,-,processed
+7-Mar-25,67c7cf1f3f049a479e2c7dd2,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+7-Mar-25,67c7cf221b96abd44810935f,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+7-Mar-25,67c7cf1f8345ea6aa50a56b0,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+7-Mar-25,67c7cf19ea4679b060f4cd2c,1h 21m 12s,$1.90/hr,$36.67 ,prepay,Ordination Knight,processed
+7-Mar-25,67c7cf2eff706ea7e21db1dd,1h 20m 35s,$1.90/hr,$36.67 ,prepay,Ordination Knight,processed
+7-Mar-25,67c7cf2480660f3ea6b1e8bd,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+7-Mar-25,67cac8e78bfcb36d8c71383a,1h 6m 33s,$27.50/hr,$30.51 ,prepay,green_wizards,processed
+7-Mar-25,67c7cf286065d1f250e81cd1,1h 16m 7s,$27.50/hr,$34.89 ,prepay,green_wizards,processed
+7-Mar-25,67c7cf241837024a9d059610,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+7-Mar-25,67c7cf236ac33147fb779eb7,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+7-Mar-25,67c7cf1f6d542d04ba4cdfc3,1h 18m 20s,$27.50/hr,$35.90 ,prepay,green_wizards,processed
+7-Mar-25,67c957e057c484fd9e282b3c,-,-,$11.00 ,missionReward,-,processed
+7-Mar-25,67c7cf2f8f190cc24ed2e2d3,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+7-Mar-25,67c7cf24bea08f6ae7572c69,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+6-Mar-25,67c7cf253d5835ad9c8bf413,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+6-Mar-25,67c7cf1922297d61faf8130e,1h 47m 7s,$1.90/hr,$36.67 ,prepay,Ordination Knight,processed
+6-Mar-25,67c7cf239b312152ef8b14e5,1h 40m 20s,$1.90/hr,$36.67 ,prepay,Ordination Knight,processed
+6-Mar-25,67c7cf1f85a84615ff3f81dd,1h 19m 44s,$1.90/hr,$36.55 ,prepay,Ordination Knight,processed
+6-Mar-25,67c7cf0d80660f3ea6b1dcc3,1h 42m 44s,$1.90/hr,$36.67 ,prepay,Ordination Knight,processed
+6-Mar-25,67c8065a1cdbd5bae7315933,-,-,$52.25 ,missionReward,-,processed
+6-Mar-25,67c7cf1f35c1056bd418650e,1h 17m 36s,$27.50/hr,$35.57 ,prepay,green_wizards,processed
+6-Mar-25,67c7cf17ea4679b060f4cbfb,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+6-Mar-25,67c7cf061837024a9d05825b,1h 21m 27s,$1.90/hr,$36.67 ,prepay,Ordination Knight,processed
+5-Mar-25,67c7cf10abc289d79522ef3b,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+5-Mar-25,67c7cf1261f6888a30479903,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+5-Mar-25,67c7cf1c618428cda3a48d5d,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+5-Mar-25,67c7cf199d8a7d1bb599eff6,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+5-Mar-25,67c7cf132047ef871f38907a,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+5-Mar-25,67c7cf069b312152ef8b0166,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+5-Mar-25,67c7cf088f190cc24ed2ca99,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+5-Mar-25,67c7cf0e2eecd67aded0e926,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+5-Mar-25,67c7cf001ada876eeaf630a6,1h 16m 5s,$27.50/hr,$34.87 ,prepay,green_wizards,processed
+4-Mar-25,67c748ee3316c9c1407630d5,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+4-Mar-25,67c538270f9334f3532ab0e0,-,-,$27.50 ,missionReward,-,processed
+4-Mar-25,67c6b9231a563d7239ba3e7f,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+4-Mar-25,67c634ca144bd5409d73d6d4,1h 48m 53s,$1.90/hr,$36.67 ,prepay,Ordination Knight,processed
+3-Mar-25,67c5f52f67fb729b7067ca86,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+3-Mar-25,67c55423ae8001d9e7e93b5c,-,-,$27.50 ,missionReward,-,processed
+3-Mar-25,67c5fb4952328863ee7d27f3,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+3-Mar-25,67c540542b882ca54a04366b,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+3-Mar-25,67c5cccb4a4622dedf0fb176,1h 14m 2s,$8.25/hr,$10.18 ,trainingTask,green_wizards,processed
+3-Mar-25,67c5b9935c02a5814712eec0,1h 13m 20s,$8.25/hr,$10.08 ,trainingTask,green_wizards,processed
+3-Mar-25,67c5a1731fa016ced5013514,1h 20m ,$8.25/hr,$11.00 ,trainingTask,green_wizards,processed
+2-Mar-25,67c456717620fe59e958e0fd,-,-,$5.50 ,missionReward,-,processed
+23-Feb-25,67bb69010ab5a7734c4c08a3,49m 16s,$27.50/hr,$22.59 ,prepay,mail_valley,processed
+23-Feb-25,67bb5b69a333bd25a436fb8a,49m 5s,$27.50/hr,$22.50 ,prepay,mail_valley,processed
+22-Feb-25,67ba4fa906bf0e43a7bfbccd,48m 5s,$1.50/hr,$22.04 ,prepay,Ordination Knight,processed
+22-Feb-25,67b96caf1da0d61aa46e090d,50m ,$8.25/hr,$6.88 ,trainingTask,mail_valley,processed
+21-Feb-25,67b8eed3508f7a2cef4c033e,47m 51s,$8.25/hr,$6.58 ,trainingTask,mail_valley,processed
+21-Feb-25,67b8e453c6de99f404cc09f9,44m 17s,$8.25/hr,$6.09 ,trainingTask,mail_valley,processed
+20-Feb-25,67b72af71912b75b037b0a90,47m 23s,$27.50/hr,$21.72 ,prepay,mighty_moo,processed
+19-Feb-25,67b5f8a225a3324aaa0400da,50m ,$8.25/hr,$6.88 ,trainingTask,mighty_moo,processed
+14-Feb-25,67af24e3cc057ed0acafd247,1h 20m ,$27.50/hr,$36.67 ,prepay,Ordination Knight,processed
+14-Feb-25,67af2bac61f0a49d7fb0eb8e,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+14-Feb-25,67af19444feb52facf2c021d,1h 15m 57s,$1.50/hr,$34.82 ,prepay,Ordination Knight,processed
+14-Feb-25,67aece6257753db280b97830,1h 15m 51s,$27.50/hr,$34.77 ,prepay,green_wizards,processed
+13-Feb-25,67aa3e3b3559a6bcc30c8aa4,1h 20m ,$27.50/hr,$36.67 ,prepay,green_wizards,processed
+13-Feb-25,67ae3d7d63a1fe1b051452e6,18m 49s,$8.25/hr,$2.59 ,trainingTask,green_wizards,processed
+13-Feb-25,67ae2a49988c1cd6d8f9644e,1h 20m ,$8.25/hr,$11.00 ,trainingTask,green_wizards,processed
+13-Feb-25,67ae12cbb99369fb1b011ae5,1h 20m ,$8.25/hr,$11.00 ,trainingTask,green_wizards,processed

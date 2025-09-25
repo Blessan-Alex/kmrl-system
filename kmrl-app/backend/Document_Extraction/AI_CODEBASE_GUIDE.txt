@@ -1,0 +1,99 @@
+KMRL Document Processing - AI Codebase Guide
+
+Purpose
+- Async document processing pipeline (Phase 2) with file-type detection, quality assessment, routing, extraction/OCR, and CAD handling.
+
+Core Entry Points
+- Celery worker: python document_processor/worker.py
+- Celery tasks module: document_processor/tasks.py
+  - process_document(file_path, file_id, **kwargs)
+  - ocr_process(image_path, file_id, **kwargs)
+  - enhance_image(file_path, output_path)
+- Batch (no Redis/Celery): python3 batch_process_folder.py --input ./tests --output ./outputs/tests_run
+- Example runner: python example_usage.py
+
+Key Modules
+- Config: config.py (Redis URL, OCR config, logging, supported extensions)
+- Models (Pydantic): document_processor/models.py (FileType, QualityDecision, ProcessingResult, etc.)
+- Detection: document_processor/utils/file_detector.py (extension + MIME + magic, weighted)
+- Quality: document_processor/utils/quality_assessor.py (file size, image quality, text density → decision)
+- Language: document_processor/utils/language_detector.py
+- Processors:
+  - Base: document_processor/processors/base_processor.py
+  - Text/PDF/Office: document_processor/processors/text_processor.py
+    - Uses MarkItDown (preferred) / PyPDF2 fallback
+    - Always performs mixed-content OCR on PDF images and merges text
+    - Malayalam OCR supported; Malayalam-only fallback + noise filter when Malayalam dominates
+  - Image/OCR: document_processor/processors/image_processor.py (OpenCV preprocess + Tesseract OCR)
+  - CAD (basic): document_processor/processors/cad_processor.py (metadata + placeholder)
+  - CAD (enhanced): document_processor/processors/enhanced_cad_processor.py (DXF via ezdxf, optional DWG→DXF)
+
+Recent Phase 2 Enhancements
+- PDF mixed-content OCR always on; merged with text output
+- Malayalam prioritized in OCR (config TESSERACT_LANGUAGES = "mal+eng")
+- Malayalam-only OCR fallback with line filtering to reduce Latin noise
+
+System Dependencies
+- Tesseract + Malayalam language data:
+  sudo apt update && sudo apt install -y tesseract-ocr tesseract-ocr-mal
+- libmagic for python-magic (often provided by file/libmagic packages)
+- OpenCV dependencies (opencv-python wheels used)
+- Optional: ezdxf for DXF, MarkItDown for Office/PDF
+
+Python Dependencies
+- requirements.txt (expand as needed). If pytest not present, install with: python3 -m pip install --user pytest
+
+Configuration
+- .env (optional). Keys read in config.py:
+  - REDIS_URL (default redis://localhost:6379/0)
+  - TESSERACT_CMD (default /usr/bin/tesseract)
+  - TESSERACT_LANGUAGES (default mal+eng)
+  - MAX_FILE_SIZE_MB, IMAGE_QUALITY_THRESHOLD, TEXT_DENSITY_THRESHOLD
+
+How to Run
+1) Batch (local, no queue):
+   python3 batch_process_folder.py --input ./tests --output ./outputs/tests_run
+   Outputs:
+   - Per-file: outputs/<run>/<name>.json
+   - Sidecar text: outputs/<run>/<name>.extracted.txt
+   - Index: outputs/<run>/index.json
+   - Reports: outputs/<run>/reports/{report.json, report.md}
+
+2) Celery worker (requires Redis):
+   redis-server (separate process)
+   python document_processor/worker.py
+   Submit task:
+     from document_processor.tasks import process_document
+     task = process_document.delay('path/to/file.pdf', 'file_id_123')
+
+3) Examples:
+   python example_usage.py
+
+Processing Flow (Phase 2)
+- FileTypeDetector → QualityAssessor → decision {PROCESS, ENHANCE, REJECT}
+- Route:
+  - Text/Office/PDF → TextProcessor (MarkItDown + OCR merge)
+  - Image → ImageProcessor (OpenCV + OCR)
+  - CAD → EnhancedCADProcessor (DXF preferred) or CADProcessor
+- Malayalam handling:
+  - OCR runs with mal+eng; tries Malayalam-only pass; filters lines to reduce non-Malayalam noise
+
+Known Gaps / TODOs
+- Auto-run enhancement when decision == ENHANCE before processing
+- Human-review flag/export for REJECT or low-confidence results
+- Confidence thresholds (e.g., ≥0.7 save, <0.7 review)
+- Translation step when language == 'ml' (Malayalam → English); include both texts
+- Align Celery task names/routes (custom names vs task_routes keys)
+- Harden error handling (OCR retry/alt configs, clear messages when language packs missing)
+- Provide .env.example and expand requirements.txt
+
+Notes for AI Tools
+- Show main files to user for navigation: worker.py, tasks.py, batch_process_folder.py, text_processor.py, image_processor.py, enhanced_cad_processor.py, file_detector.py, quality_assessor.py
+- To improve Malayalam OCR accuracy, ensure tesseract-ocr-mal is installed and use higher DPI (we render PDF pages at 300 DPI already)
+- If sidecar text appears empty, ensure batch set OUTPUT_DIR_GLOBAL and write happens after ProcessingResult.success; rerun batch
+
+Troubleshooting
+- Missing pytest: python3 -m pip install --user pytest
+- Tesseract Malayalam missing: sudo apt install -y tesseract-ocr-mal
+- MIME/magic issues: ensure libmagic installed; python-magic is used for detection
+- MarkItDown missing: pip install markitdown (or rely on fallbacks)

@@ -1,0 +1,14 @@
+{
+  "jobCardId": "JC-2025-4815",
+  "assetId": "PMP-002B",
+  "description": "Annual maintenance for primary coolant pump",
+  "status": "Completed",
+  "technician": "Anil Kumar",
+  "tasks": [
+    {"task": "Check bearing lubrication", "completed": true},
+    {"task": "Inspect impeller for wear", "completed": true},
+    {"task": "Verify motor alignment", "completed": false, "notes": "Slight misalignment detected. Requires follow-up."}
+  ],
+  "language": "bilingual_en_ml",
+  "malayalam_notes": "അറ്റകുറ്റപ്പണി പൂർത്തിയായി"
+}

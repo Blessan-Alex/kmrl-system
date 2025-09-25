@@ -1,0 +1,451 @@
+﻿KMRL – Detailed Flow
+Phase 1: Document Ingestion
+1. Document Upload
+
+   * Automatic (Connectors) → API Key Auth
+
+   * Manual (Users) → Session Auth
+
+      2. Single API Endpoint
+
+         * POST /api/v1/documents/upload
+
+            3. File Validation
+
+               * Size limits (200MB max)
+
+               * File type validation
+
+               * Security scanning
+
+               * Format verification
+
+                  4. Save to MinIO/S3
+
+                     * Original file storage
+
+                        5. Create Database Record
+
+                           * PostgreSQL metadata
+
+                              6. Queue Processing Task
+
+                                 * Redis + Celery async processing
+
+
+
+________________
+
+
+Phase 2: Document Processing
+                                 7. Worker Picks Task from Queue
+
+                                    * Async processing task
+
+                                       8. File Type Detection
+
+                                          * Technical drawings (.dwg, .dxf, .step, .stp, .iges, .igs)
+
+                                          * Images (.jpg, .jpeg, .png, .gif, .bmp, .tiff, .tif, .webp) → OCR: Tesseract
+
+                                          * PDFs (text, image, or mixed content)
+
+                                          * Office documents (.docx, .doc, .xlsx, .xls, .pptx, .ppt) → Markitdown
+
+                                          * Text files (.txt, .md, .rst, .html, .xml, .json, .csv)
+
+                                          * Unknown files
+
+                                             9. Quality Assessment
+
+                                                * File size check (50MB limit)
+
+                                                * Image quality analysis
+
+                                                * Text density check
+
+                                                * Confidence scoring
+
+                                                   10. Quality Check Decision
+
+                                                      * Process → Route to Processor
+
+                                                      * Enhance → Image Enhancement → Route to Processor
+
+                                                      * Reject → Handle Poor Quality → Human Review Task
+
+
+
+
+
+________________
+
+
+Quality Control & Validation
+                                                         11. Route to Appropriate Processor
+
+                                                            * Text Document Processing
+
+                                                               * Use Markitdown for Office docs
+
+                                                               * Direct text extraction for text files
+
+                                                               * Markitdown for PDFs with text
+
+                                                               * Language detection → If Malayalam, translate to English
+
+                                                                  * Image Document Processing
+
+                                                                     * Image enhancement (denoise, contrast, sharpen, save)
+
+                                                                     * Language detection
+
+                                                                     * OCR Processing: Malayalam (mal+eng) → Tesseract; English → Tesseract
+
+                                                                     * Confidence assessment
+
+                                                                        * Technical Drawing Processing
+
+                                                                           * CAD files (.dwg, .dxf)
+
+                                                                           * STEP files (.step, .stp, .iges, .igs)
+
+                                                                           * Extract metadata
+
+                                                                           * Create placeholder text
+
+                                                                           * Flag for specialized viewer
+
+                                                                              * Mixed Content Processing
+
+                                                                                 * Extract text with Markitdown
+
+                                                                                 * Extract images from PDF
+
+                                                                                 * Process each image with OCR
+
+                                                                                 * Combine text + OCR results
+
+                                                                                 * Save combined text
+
+                                                                                    * Unknown Document Processing
+
+                                                                                       * Try multiple extraction methods
+
+                                                                                       * Fallback to OCR
+
+                                                                                       * Flag for human review
+
+________________
+
+
+Human Review System
+                                                                                          12. Quality Validation
+
+                                                                                             * Confidence scoring
+
+                                                                                             * OCR error detection
+
+                                                                                             * Text quality assessment
+
+                                                                                             * Processing method validation
+
+                                                                                                13. Confidence Check
+
+                                                                                                   * High confidence (≥0.7) → Save results
+
+                                                                                                   * Low confidence (<0.7) → Flag for human review
+
+                                                                                                   * Failed processing → Error handling
+
+                                                                                                      14. Error Handling & Fallbacks
+
+                                                                                                         * OCR error handling (alternative engines/configs, use best result, flag if fail)
+
+                                                                                                         * Processing error handling
+
+                                                                                                         * Quality issue handling
+
+                                                                                                         * Fallback mechanisms
+
+________________
+
+
+Final Processing
+                                                                                                            15. Human Review Flagging
+
+                                                                                                               * Create review task
+
+                                                                                                               * Update document status
+
+                                                                                                               * Notify human reviewers
+
+                                                                                                               * Set priority levels
+
+                                                                                                                  16. Quality Control Dashboard
+
+                                                                                                                     * Pending review count
+
+                                                                                                                     * Rejected documents count
+
+                                                                                                                     * Low confidence documents count
+
+                                                                                                                     * Processing errors count
+
+                                                                                                                        17. Document Rejection Handling
+
+                                                                                                                           * Create rejection record
+
+                                                                                                                           * Update document status
+
+                                                                                                                           * Notify user
+
+                                                                                                                           * Log rejection reason
+
+________________
+
+
+Phase 3: RAG Pipeline Preparation
+                                                                                                                              18. Data Preprocessing
+
+                                                                                                                                 * Clean text data
+
+                                                                                                                                 * Remove duplicates
+
+                                                                                                                                 * Fix OCR errors
+
+                                                                                                                                 * Standardize format
+
+                                                                                                                                    19. Smart Chunking
+
+                                                                                                                                       * Maintenance docs → Section-based chunks
+
+                                                                                                                                       * Incident reports → Event-based chunks
+
+                                                                                                                                       * Financial docs → Table-based chunks
+
+                                                                                                                                       * General docs → Paragraph-based chunks
+
+                                                                                                                                          20. Generate Embeddings
+
+                                                                                                                                             * OpenAI text-embedding-3-large / all-MiniLM-L6-v2
+
+                                                                                                                                             * Batch processing
+
+                                                                                                                                             * Error handling
+
+                                                                                                                                                21. Store in Vector Database
+
+                                                                                                                                                   * OpenSearch index
+
+                                                                                                                                                   * Metadata association
+
+                                                                                                                                                   * Chunk relationships
+
+                                                                                                                                                      22. Mark Document as RAG Ready
+
+________________
+
+
+Phase 4: Smart Notifications
+                                                                                                                                                         23. Trigger Notification Scan
+
+                                                                                                                                                            * Vector similarity search
+
+                                                                                                                                                            * Document chunk analysis
+
+                                                                                                                                                            * Trigger pattern matching
+
+                                                                                                                                                               24. Load Pre-computed Trigger Embeddings
+
+                                                                                                                                                                  * Cached in Redis
+
+                                                                                                                                                                  * Category-specific triggers
+
+                                                                                                                                                                  * Similarity thresholds
+
+                                                                                                                                                                     25. Vector Similarity Search
+
+                                                                                                                                                                        * Cosine similarity calculation
+
+                                                                                                                                                                        * Chunk-to-trigger comparison
+
+                                                                                                                                                                        * Relevance scoring
+
+                                                                                                                                                                           26. Check Similarity Thresholds
+
+                                                                                                                                                                              * Urgent maintenance (≥0.85)
+
+                                                                                                                                                                              * Safety incident (≥0.90)
+
+                                                                                                                                                                              * Compliance violation (≥0.80)
+
+                                                                                                                                                                              * Deadline approaching (≥0.75)
+
+                                                                                                                                                                              * Budget exceeded (≥0.80)
+
+                                                                                                                                                                                 27. Generate Notifications Based on Rules
+
+                                                                                                                                                                                    * Rule-based system
+
+                                                                                                                                                                                    * Category classification
+
+                                                                                                                                                                                    * Recipient determination
+
+                                                                                                                                                                                       28. Send Smart Notification
+
+                                                                                                                                                                                          * Email (normal priority)
+
+                                                                                                                                                                                          * SMS (urgent priority)
+
+                                                                                                                                                                                          * Slack (high priority)
+
+                                                                                                                                                                                          * Multi-channel delivery
+
+                                                                                                                                                                                             29. Update Notification Status
+
+                                                                                                                                                                                                * Track delivery
+
+                                                                                                                                                                                                * Monitor response
+
+                                                                                                                                                                                                * Update document status
+
+________________
+
+
+Phase 5: RAG Query Processing
+                                                                                                                                                                                                   30. Query Processing
+
+                                                                                                                                                                                                      * Convert query to embedding
+
+                                                                                                                                                                                                      * Vector similarity search
+
+                                                                                                                                                                                                      * Retrieve relevant chunks
+
+                                                                                                                                                                                                      * Rank by relevance
+
+                                                                                                                                                                                                         31. Context Assembly
+
+                                                                                                                                                                                                            * Combine retrieved chunks
+
+                                                                                                                                                                                                            * Add metadata context
+
+                                                                                                                                                                                                            * Prepare for LLM
+
+                                                                                                                                                                                                               32. LLM Response Generation
+
+                                                                                                                                                                                                                  * Provide context to LLM
+
+                                                                                                                                                                                                                  * Generate KMRL-specific response
+
+                                                                                                                                                                                                                  * Include source citations
+
+                                                                                                                                                                                                                  * Return structured response
+
+________________
+
+
+Phase 6: User Interfaces & Applications
+                                                                                                                                                                                                                     33. Department Dashboards
+
+                                                                                                                                                                                                                        * Operations
+
+                                                                                                                                                                                                                        * Engineering
+
+                                                                                                                                                                                                                        * Finance
+
+                                                                                                                                                                                                                        * HR
+
+                                                                                                                                                                                                                           34. Intelligent Search Interface
+
+                                                                                                                                                                                                                              * Advanced search with filters
+
+                                                                                                                                                                                                                              * Query suggestions
+
+                                                                                                                                                                                                                              * Related documents
+
+                                                                                                                                                                                                                              * Search analytics
+
+                                                                                                                                                                                                                                 35. Chat Interface
+
+                                                                                                                                                                                                                                    * Conversational AI
+
+                                                                                                                                                                                                                                    * Context awareness
+
+                                                                                                                                                                                                                                    * Multi-turn conversations
+
+                                                                                                                                                                                                                                    * Session management
+
+                                                                                                                                                                                                                                       36. Document Analytics
+
+                                                                                                                                                                                                                                          * Usage patterns
+
+                                                                                                                                                                                                                                          * Content insights
+
+                                                                                                                                                                                                                                          * Trend analysis
+
+                                                                                                                                                                                                                                          * Performance metrics
+
+                                                                                                                                                                                                                                             37. Compliance Monitoring
+
+                                                                                                                                                                                                                                                * Automated compliance checks
+
+                                                                                                                                                                                                                                                * Compliance reports
+
+                                                                                                                                                                                                                                                * Risk assessment
+
+                                                                                                                                                                                                                                                * Audit trails
+
+                                                                                                                                                                                                                                                   38. Automated Workflows
+
+                                                                                                                                                                                                                                                      * Incident processing
+
+                                                                                                                                                                                                                                                      * Maintenance requests
+
+                                                                                                                                                                                                                                                      * Approval workflows
+
+                                                                                                                                                                                                                                                      * Task assignment
+
+                                                                                                                                                                                                                                                         39. External System Integration
+
+                                                                                                                                                                                                                                                            * Maximo integration
+
+                                                                                                                                                                                                                                                            * Finance system sync
+
+                                                                                                                                                                                                                                                            * Email integration
+
+                                                                                                                                                                                                                                                            * Third-party APIs
+
+                                                                                                                                                                                                                                                               40. Mobile Application
+
+                                                                                                                                                                                                                                                                  * Field worker access
+
+                                                                                                                                                                                                                                                                  * Offline capabilities
+
+                                                                                                                                                                                                                                                                  * Location-based queries
+
+                                                                                                                                                                                                                                                                  * Emergency procedures
+
+________________
+
+
+Phase 7: Advanced Features
+                                                                                                                                                                                                                                                                     41. API Development
+
+                                                                                                                                                                                                                                                                        * RESTful APIs
+
+                                                                                                                                                                                                                                                                        * GraphQL endpoints
+
+                                                                                                                                                                                                                                                                        * Webhook support
+
+                                                                                                                                                                                                                                                                        * API documentation
+
+                                                                                                                                                                                                                                                                           42. Field Integration
+
+                                                                                                                                                                                                                                                                              * IoT device integration
+
+                                                                                                                                                                                                                                                                              * Sensor data correlation
+
+                                                                                                                                                                                                                                                                              * Real-time monitoring
+
+                                                                                                                                                                                                                                                                              * Predictive maintenance
