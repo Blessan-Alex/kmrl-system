@@ -5,6 +5,7 @@
 1. Document Upload
    ├── Automatic (Connectors) → API Key Auth
    └── Manual (Users) → Session Auth
+   |__ Use clery or redis here if needed 
 
 2. Single API Endpoint
    └── POST /api/v1/documents/upload
@@ -139,13 +140,15 @@ Final Processing
     ├── Clean text data
     ├── Remove duplicates
     ├── Fix OCR errors
-    └── Standardize format
+    Malayalalam ENglish , - handle that 
+    └── Standardize format - json format 
 
 19. Smart Chunking
     ├── Maintenance documents → Section-based chunks
     ├── Incident reports → Event-based chunks
     ├── Financial docs → Table-based chunks
     └── General docs → Paragraph-based chunks
+    
 
 20. Generate Embeddings
     ├── OpenAI text-embedding-3-large/all-MiniLM-L6-v2
