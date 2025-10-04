@@ -523,6 +523,9 @@ migrations/*.sql
 *.svg
 *.ico
 
+# Allow specific project diagram
+!kmrl-app/assets/diagram-export-10-4-2025-1_23_51-PM.png
+
 # Specific to your project
 kmrl-app/backend/storage/
 kmrl-app/backend/minio/
