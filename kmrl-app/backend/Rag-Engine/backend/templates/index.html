@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMRM RAG Query System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .query-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .query-input {
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results-section {
+            margin-top: 30px;
+        }
+
+        .response-card {
+            background: white;
+            border: 1px solid #e1e8ed;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .response-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .response-meta {
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+
+        .response-content {
+            line-height: 1.6;
+            color: #34495e;
+            font-size: 16px;
+        }
+
+        .context-documents {
+            margin-top: 20px;
+        }
+
+        .context-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .context-item {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .context-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .context-doc-id {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .context-score {
+            background: #3498db;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+        }
+
+        .context-text {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .error-message {
+            background: #e74c3c;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .stats-section {
+            background: #ecf0f1;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 KMRM RAG Query System</h1>
+            <p>Ask questions about metro operations, safety, maintenance, and more</p>
+            <p style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;">
+                Running on port 5001 | Gemini 2.0 Flash + OpenSearch
+            </p>python3 app.py
+            🚀 Starting KMRM RAG Backend Server
+            ==================================================
+            🔌 Connecting to OpenSearch...
+            2025-09-25 21:09:59,731 INFO GET http://localhost:9200/ [status:200 request:0.057s]
+            2025-09-25 21:09:59,732 INFO Connected to OpenSearch at localhost:9200
+            2025-09-25 21:09:59,738 INFO GET http://localhost:9200/embeddings_index/_stats [status:200 request:0.006s]
+            2025-09-25 21:09:59,739 ERROR Failed to get index stats: 'embeddings_index'
+            2025-09-25 21:09:59,739 INFO OpenSearch connected: 0 documents
+            ✅ OpenSearch connected successfully
+            🤖 Gemini 2.0 Flash configured
+            🌐 Starting Flask server...
+             * Serving Flask app 'app'
+             * Debug mode: on
+            Address already in use
+            Port 5000 is in use by another program. Either identify and stop that program, or start the server with a different port.
+            blaze@BlessLap:/mnt/c/Users/blaze/Downloads/kmrl/kmrl-app/backend/Rag-Engine/backend$ 
+        </div>
+
+        <div class="main-content">
+            <div class="query-section">
+                <div class="form-group">
+                    <label for="query">Your Question:</label>
+                    <input type="text" id="query" class="query-input" 
+                           placeholder="e.g., What are the safety requirements for metro operations?" 
+                           maxlength="500">
+                </div>
+
+                <div class="form-group">
+                    <label for="department">Department Filter (Optional):</label>
+                    <select id="department">
+                        <option value="">All Departments</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="topK">Number of Results:</label>
+                    <input type="number" id="topK" value="5" min="1" max="10">
+                </div>
+
+                <button class="btn" onclick="processQuery()">🔍 Search & Generate Response</button>
+                <button class="btn" onclick="clearResults()">🗑️ Clear</button>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Processing your query with Gemini 2.0 Flash...</p>
+            </div>
+
+            <div class="results-section" id="results" style="display: none;">
+                <!-- Results will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let departments = [];
+
+        // Load departments on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDepartments();
+        });
+
+        async function loadDepartments() {
+            try {
+                const response = await fetch('/api/departments');
+                const data = await response.json();
+                
+                if (data.departments) {
+                    departments = data.departments;
+                    const select = document.getElementById('department');
+                    
+                    departments.forEach(dept => {
+                        const option = document.createElement('option');
+                        option.value = dept;
+                        option.textContent = dept;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to load departments:', error);
+            }
+        }
+
+        async function processQuery() {
+            const query = document.getElementById('query').value.trim();
+            const department = document.getElementById('department').value;
+            const topK = parseInt(document.getElementById('topK').value);
+
+            if (!query) {
+                alert('Please enter a question');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+
+            try {
+                const response = await fetch('/api/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        department: department || null,
+                        top_k: topK
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    displayResults(data);
+                } else {
+                    displayError(data.error || 'Query processing failed');
+                }
+            } catch (error) {
+                displayError('Network error: ' + error.message);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.style.display = 'block';
+
+            const html = `
+                <div class="response-card">
+                    <div class="response-header">
+                        <div class="response-title">🤖 AI Response</div>
+                        <div class="response-meta">
+                            Processed in ${data.search_time.toFixed(2)}s
+                        </div>
+                    </div>
+                    <div class="response-content">
+                        ${data.response.replace(/\n/g, '<br>')}
+                    </div>
+                </div>
+
+                <div class="context-documents">
+                    <div class="context-title">📄 Source Documents (${data.total_documents_searched} found)</div>
+                    ${data.context_documents.map((doc, index) => `
+                        <div class="context-item">
+                            <div class="context-item-header">
+                                <div class="context-doc-id">Document ${index + 1}: ${doc.document_id} (Chunk ${doc.chunk_index})</div>
+                                <div class="context-score">Score: ${doc.similarity_score.toFixed(3)}</div>
+                            </div>
+                            <div class="context-text">${doc.text}</div>
+                            <div style="margin-top: 8px; font-size: 0.8em; color: #95a5a6;">
+                                Department: ${doc.department}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="stats-section">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">${data.total_documents_searched}</div>
+                            <div class="stat-label">Documents Found</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.search_time.toFixed(2)}s</div>
+                            <div class="stat-label">Search Time</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.department_filter || 'All'}</div>
+                            <div class="stat-label">Department Filter</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            resultsDiv.innerHTML = html;
+        }
+
+        function displayError(message) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = `
+                <div class="error-message">
+                    <strong>Error:</strong> ${message}
+                </div>
+            `;
+        }
+
+        function clearResults() {
+            document.getElementById('query').value = '';
+            document.getElementById('department').value = '';
+            document.getElementById('topK').value = '5';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // Allow Enter key to submit query
+        document.getElementById('query').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                processQuery();
+            }
+        });
+    </script>
+</body>
+</html>
