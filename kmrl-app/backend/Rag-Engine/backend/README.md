@@ -5,7 +5,7 @@ A complete RAG (Retrieval-Augmented Generation) system with Gemini 2.0 Flash int
 ## 🚀 Features
 
 - **Gemini 2.0 Flash Integration**: Uses your API key for intelligent response generation
-- **OpenSearch Similarity Search**: Fast vector search using all-MiniLM-L6-v2 embeddings
+- **OpenSearch Similarity Search**: Fast vector search using krutrim-ai-labs/vyakyarth embeddings
 - **Modern Web Interface**: Beautiful, responsive frontend
 - **Department Filtering**: Filter results by department
 - **Real-time Processing**: Fast query processing with progress indicators
@@ -86,7 +86,7 @@ User Query → Embedding Generation → OpenSearch Search → Gemini Summarizati
 ### 2. Components
 - **Frontend**: Modern HTML/JS interface with real-time updates
 - **Backend**: Flask API with CORS support
-- **Embeddings**: all-MiniLM-L6-v2 for fast vector generation
+- **Embeddings**: krutrim-ai-labs/vyakyarth for fast vector generation
 - **Search**: OpenSearch k-NN search for similarity matching
 - **AI**: Gemini 2.0 Flash for intelligent response generation
 
@@ -94,7 +94,7 @@ User Query → Embedding Generation → OpenSearch Search → Gemini Summarizati
 ```
 Input: "What are the safety requirements for metro operations?"
 
-1. Generate embedding using all-MiniLM-L6-v2
+1. Generate embedding using krutrim-ai-labs/vyakyarth
 2. Search OpenSearch for similar documents
 3. Send context + query to Gemini 2.0 Flash
 4. Return structured response with sources
@@ -143,7 +143,7 @@ export OPENSEARCH_PORT="9200"
 ```
 
 ### Model Configuration
-- **Embedding Model**: all-MiniLM-L6-v2 (384 dimensions)
+- **Embedding Model**: krutrim-ai-labs/vyakyarth (768 dimensions)
 - **AI Model**: gemini-2.0-flash-exp
 - **Search Method**: k-NN with cosine similarity
 

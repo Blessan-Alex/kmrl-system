@@ -54,7 +54,7 @@ def create_index(client, index_name="embeddings_index"):
                 },
                 "embedding": {
                     "type": "knn_vector",
-                    "dimension": 384,
+                    "dimension": 768,
                     "method": {
                         "name": "hnsw",
                         "space_type": "l2",

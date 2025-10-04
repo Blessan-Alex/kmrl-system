@@ -303,7 +303,7 @@ async def get_stats():
         return StatsResponse(
             opensearch_stats=stats,
             gemini_model="gemini-2.0-flash-exp",
-            embedding_model="all-MiniLM-L6-v2"
+            embedding_model="krutrim-ai-labs/vyakyarth"
         )
         
     except Exception as e:

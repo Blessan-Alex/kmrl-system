@@ -54,7 +54,7 @@ def initialize_opensearch():
         return False
 
 def generate_embedding(query: str) -> List[float]:
-    """Generate embedding for query using all-MiniLM-L6-v2"""
+    """Generate embedding for query using krutrim-ai-labs/vyakyarth"""
     try:
         return query_to_embedding(query)
     except Exception as e:
@@ -217,7 +217,7 @@ def get_stats():
         return jsonify({
             'opensearch_stats': stats,
             'gemini_model': 'gemini-2.0-flash-exp',
-            'embedding_model': 'all-MiniLM-L6-v2'
+            'embedding_model': 'krutrim-ai-labs/vyakyarth'
         })
         
     except Exception as e:

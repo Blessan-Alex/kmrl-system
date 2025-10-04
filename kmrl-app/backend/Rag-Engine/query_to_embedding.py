@@ -11,7 +11,7 @@ def get_model():
     """Lazy load the embedding model"""
     global _model
     if _model is None:
-        _model = SentenceTransformer('all-MiniLM-L6-v2')
+        _model = SentenceTransformer('krutrim-ai-labs/vyakyarth')
     return _model
 
 def query_to_embedding(query: str) -> List[float]:
