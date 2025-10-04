@@ -1,0 +1,28 @@
+                                          Table "public.documents"
+      Column       |           Type           | Collation | Nullable |                Default                
+-------------------+--------------------------+-----------+----------+---------------------------------------
+ id                | integer                  |           | not null | nextval('documents_id_seq'::regclass)
+ original_filename | character varying        |           |          | 
+ s3_key            | character varying        |           |          | 
+ source            | character varying        |           |          | 
+ content_type      | character varying        |           |          | 
+ file_size         | integer                  |           |          | 
+ upload_time       | timestamp with time zone |           |          | now()
+ status            | character varying        |           | not null | 
+ extracted_text    | text                     |           |          | 
+ confidence_score  | double precision         |           |          | 
+ language          | character varying        |           |          | 
+ department        | character varying        |           |          | 
+ document_metadata | json                     |           |          | 
+ uploaded_by       | character varying        |           |          | 
+ created_at        | timestamp with time zone |           |          | now()
+ updated_at        | timestamp with time zone |           |          | now()
+Indexes:
+    "documents_pkey" PRIMARY KEY, btree (id)
+    "ix_documents_id" btree (id)
+    "ix_documents_original_filename" btree (original_filename)
+    "ix_documents_s3_key" btree (s3_key)
+    "ix_documents_source" btree (source)
+Check constraints:
+    "ck_document_status" CHECK (status::text = ANY (ARRAY['queued'::character varying, 'processing'::character varying, 'processed'::character varying, 'failed'::character varying]::text[]))
+
