@@ -119,6 +119,33 @@ The system follows a microservices architecture with:
 - **Notification Engine** for automated alerts
 - **Analytics Dashboard** for insights and monitoring
 
+## 🚧 Phase 2: Advanced Features (In Development)
+
+### **Enhanced Document Processing**
+- **🔧 Advanced OCR Pipeline** - Multi-engine OCR with Tesseract, PaddleOCR, and cloud fallbacks
+- **📊 Smart Table Extraction** - Camelot/Tabula for vector PDFs, deep learning models for scanned tables
+- **🎯 Technical Drawing Processing** - DWG/DXF conversion with ODA File Converter, metadata extraction
+- **🌐 Bilingual Language Support** - Enhanced Malayalam OCR with specialized models and language detection
+
+### **Production-Grade Connectors**
+- **📧 Gmail Integration** - OAuth2 authentication, incremental sync, attachment processing
+- **☁️ Google Drive Connector** - Real-time file monitoring, permission management
+- **📱 WhatsApp Business API** - Message processing, media extraction, contact management
+- **🏢 SharePoint Integration** - Document library sync, metadata preservation
+- **🔧 Maximo Integration** - Work order documents, maintenance records sync
+
+### **Advanced RAG Pipeline**
+- **🧠 Smart Chunking** - Document-type aware chunking (maintenance docs, incident reports, financial data)
+- **🔍 Vector Search Optimization** - OpenSearch integration with similarity thresholds
+- **📈 Confidence Scoring** - Multi-level confidence assessment for OCR and extraction
+- **🔄 Human-in-the-Loop** - Review interface for low-confidence documents
+
+### **Monitoring & Analytics**
+- **📊 Processing Metrics** - Real-time monitoring of document processing pipeline
+- **🎯 Quality Analytics** - OCR accuracy tracking, processing success rates
+- **📈 Usage Insights** - Document access patterns, search analytics
+- **🔔 Smart Notifications** - Automated alerts for urgent maintenance, safety incidents
+
 ## 🤝 Contributors
 
 Built for **Kochi Metro Rail Limited** to modernize document management and improve operational efficiency through AI-powered document processing and intelligent search capabilities.
