@@ -558,3 +558,4 @@ test-malayalam/
 !Dockerfile
 !README.md
 !*.md
+kmrl-system/backend/kmrl-gateway/minio
