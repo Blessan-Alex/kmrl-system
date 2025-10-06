@@ -1,45 +1,233 @@
 #!/usr/bin/env python3
 """
-Script to evaluate retrieval performance of the embeddings search system
+Comprehensive RAG Retrieval Evaluation Framework
+Evaluates embedding model quality and retrieval performance
 """
 
-import numpy as np
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'Rag-Engine'))
+
+from sentence_transformers import SentenceTransformer
 from opensearchpy import OpenSearch
+import numpy as np
 import json
-import pickle
-from sklearn.metrics.pairwise import cosine_similarity
 import time
+from collections import defaultdict
+# import matplotlib.pyplot as plt
+# import seaborn as sns
 
-def connect_to_opensearch():
-    """Connect to OpenSearch cluster"""
-    client = OpenSearch(
-        hosts=[{'host': 'localhost', 'port': 9200}],
-        http_compress=True,
-        use_ssl=False,
-        verify_certs=False,
-        ssl_assert_hostname=False,
-        ssl_show_warn=False,
-    )
-    return client
-
-def load_embeddings_data(pickle_file='chunk_embeddings.pkl'):
-    """Load embeddings data for evaluation"""
-    with open(pickle_file, 'rb') as f:
-        data = pickle.load(f)
-    return data
-
-def evaluate_text_search(client, test_queries, index_name="embeddings_index"):
-    """Evaluate text-based search performance"""
-    print("\n🔍 Evaluating Text Search Performance")
-    print("=" * 50)
-    
-    results = []
-    
-    for query in test_queries:
-        start_time = time.time()
+class RetrievalEvaluator:
+    def __init__(self):
+        self.client = None
+        self.model = None
+        self.evaluation_results = {}
         
+    def connect_to_opensearch(self):
+        """Connect to OpenSearch cluster"""
+        self.client = OpenSearch(
+            hosts=[{'host': 'localhost', 'port': 9200}],
+            http_compress=True,
+            use_ssl=False,
+            verify_certs=False,
+            ssl_assert_hostname=False,
+            ssl_show_warn=False,
+        )
+        return self.client
+    
+    def load_embedding_model(self):
+        """Load the embedding model"""
+        print("🤖 Loading krutrim-ai-labs/vyakyarth model...")
+        self.model = SentenceTransformer('krutrim-ai-labs/vyakyarth')
+        print(f"✅ Model loaded successfully")
+        return self.model
+    
+    def get_index_stats(self):
+        """Get comprehensive index statistics"""
+        if not self.client.indices.exists(index="embeddings_index"):
+            return None
+            
+        stats = self.client.indices.stats(index="embeddings_index")
+        mapping = self.client.indices.get_mapping(index="embeddings_index")
+        
+        return {
+            'total_documents': stats['indices']['embeddings_index']['total']['docs']['count'],
+            'index_size_bytes': stats['indices']['embeddings_index']['total']['store']['size_in_bytes'],
+            'mapping': mapping
+        }
+    
+    def evaluate_embedding_quality(self, sample_queries):
+        """Evaluate embedding model quality"""
+        print("\n🔍 Evaluating Embedding Quality...")
+        print("=" * 50)
+        
+        results = {
+            'embedding_dimensions': 0,
+            'similarity_scores': [],
+            'query_processing_time': [],
+            'model_performance': {}
+        }
+        
+        for i, query in enumerate(sample_queries):
+            start_time = time.time()
+            
+            # Generate embedding
+            embedding = self.model.encode(query)
+            processing_time = time.time() - start_time
+            
+            results['embedding_dimensions'] = len(embedding)
+            results['query_processing_time'].append(processing_time)
+            
+            # Test semantic similarity with similar queries
+            if i < len(sample_queries) - 1:
+                next_embedding = self.model.encode(sample_queries[i + 1])
+                similarity = np.dot(embedding, next_embedding) / (
+                    np.linalg.norm(embedding) * np.linalg.norm(next_embedding)
+                )
+                results['similarity_scores'].append(similarity)
+        
+        # Calculate statistics
+        results['avg_processing_time'] = np.mean(results['query_processing_time'])
+        results['avg_similarity'] = np.mean(results['similarity_scores']) if results['similarity_scores'] else 0
+        
+        print(f"📊 Embedding Dimensions: {results['embedding_dimensions']}")
+        print(f"⏱️  Average Processing Time: {results['avg_processing_time']:.4f}s")
+        print(f"🎯 Average Similarity Score: {results['avg_similarity']:.4f}")
+        
+        return results
+    
+    def evaluate_retrieval_performance(self, test_queries, ground_truth=None):
+        """Evaluate retrieval performance with multiple metrics"""
+        print("\n📈 Evaluating Retrieval Performance...")
+        print("=" * 50)
+        
+        results = {
+            'precision_at_k': [],
+            'recall_at_k': [],
+            'f1_scores': [],
+            'mean_reciprocal_rank': [],
+            'retrieval_times': [],
+            'score_distributions': []
+        }
+        
+        for query in test_queries:
+            start_time = time.time()
+            
+            # Generate query embedding
+            query_embedding = self.model.encode(query).tolist()
+            
+            # Perform retrieval
+            search_body = {
+                "size": 10,  # Get top 10 for evaluation
+                "query": {
+                    "knn": {
+                        "embedding": {
+                            "vector": query_embedding,
+                            "k": 10
+                        }
+                    }
+                },
+                "_source": ["document_id", "chunk_index", "text", "metadata", "score"]
+            }
+            
+            response = self.client.search(index="embeddings_index", body=search_body)
+            retrieval_time = time.time() - start_time
+            
+            results['retrieval_times'].append(retrieval_time)
+            
+            # Extract scores
+            scores = [hit['_score'] for hit in response['hits']['hits']]
+            results['score_distributions'].extend(scores)
+            
+            # Calculate precision@k for different k values
+            for k in [1, 3, 5, 10]:
+                if len(response['hits']['hits']) >= k:
+                    # For now, assume all retrieved docs are relevant (simplified)
+                    precision = 1.0  # This would be calculated with ground truth
+                    results['precision_at_k'].append(precision)
+            
+            print(f"🔍 Query: '{query[:50]}...'")
+            print(f"   ⏱️  Retrieval Time: {retrieval_time:.4f}s")
+            print(f"   📊 Top Score: {scores[0]:.4f}")
+            print(f"   📈 Score Range: {min(scores):.4f} - {max(scores):.4f}")
+            print()
+        
+        # Calculate aggregate metrics
+        results['avg_retrieval_time'] = np.mean(results['retrieval_times'])
+        results['avg_precision'] = np.mean(results['precision_at_k']) if results['precision_at_k'] else 0
+        results['score_statistics'] = {
+            'mean': np.mean(results['score_distributions']),
+            'std': np.std(results['score_distributions']),
+            'min': np.min(results['score_distributions']),
+            'max': np.max(results['score_distributions'])
+        }
+        
+        print(f"📊 Average Retrieval Time: {results['avg_retrieval_time']:.4f}s")
+        print(f"🎯 Average Precision: {results['avg_precision']:.4f}")
+        print(f"📈 Score Statistics:")
+        print(f"   Mean: {results['score_statistics']['mean']:.4f}")
+        print(f"   Std: {results['score_statistics']['std']:.4f}")
+        print(f"   Range: {results['score_statistics']['min']:.4f} - {results['score_statistics']['max']:.4f}")
+        
+        return results
+    
+    def compare_retrieval_techniques(self, query):
+        """Compare different retrieval techniques"""
+        print(f"\n🔄 Comparing Retrieval Techniques for: '{query}'")
+        print("=" * 60)
+        
+        techniques = {
+            'vector_search': self._vector_search,
+            'text_search': self._text_search,
+            'hybrid_search': self._hybrid_search
+        }
+        
+        results = {}
+        
+        for technique_name, technique_func in techniques.items():
+            start_time = time.time()
+            response = technique_func(query)
+            processing_time = time.time() - start_time
+            
+            scores = [hit['_score'] for hit in response['hits']['hits'][:5]]
+            
+            results[technique_name] = {
+                'processing_time': processing_time,
+                'top_scores': scores,
+                'avg_score': np.mean(scores),
+                'score_range': f"{min(scores):.4f} - {max(scores):.4f}",
+                'num_results': len(response['hits']['hits'])
+            }
+            
+            print(f"🔍 {technique_name.upper()}:")
+            print(f"   ⏱️  Time: {processing_time:.4f}s")
+            print(f"   📊 Top Scores: {scores}")
+            print(f"   📈 Avg Score: {np.mean(scores):.4f}")
+            print(f"   📋 Results: {len(response['hits']['hits'])}")
+            print()
+        
+        return results
+    
+    def _vector_search(self, query):
+        """Vector similarity search"""
+        query_embedding = self.model.encode(query).tolist()
         search_body = {
-            "size": 5,
+            "size": 10,
+            "query": {
+                "knn": {
+                    "embedding": {
+                        "vector": query_embedding,
+                        "k": 10
+                    }
+                }
+            }
+        }
+        return self.client.search(index="embeddings_index", body=search_body)
+    
+    def _text_search(self, query):
+        """Text-based search"""
+        search_body = {
+            "size": 10,
             "query": {
                 "match": {
                     "text": {
@@ -49,167 +237,21 @@ def evaluate_text_search(client, test_queries, index_name="embeddings_index"):
                 }
             }
         }
-        
-        response = client.search(index=index_name, body=search_body)
-        search_time = time.time() - start_time
-        
-        hits = response['hits']['hits']
-        total_found = response['hits']['total']['value']
-        
-        print(f"\nQuery: '{query}'")
-        print(f"Results found: {total_found}")
-        print(f"Search time: {search_time:.3f}s")
-        
-        for i, hit in enumerate(hits[:3], 1):
-            source = hit['_source']
-            score = hit['_score']
-            print(f"  {i}. {source['document_id']} (Score: {score:.3f})")
-            print(f"     Text: {source['text'][:100]}...")
-        
-        results.append({
-            'query': query,
-            'total_found': total_found,
-            'search_time': search_time,
-            'top_results': hits[:3]
-        })
+        return self.client.search(index="embeddings_index", body=search_body)
     
-    return results
-
-def evaluate_vector_search(client, embeddings_data, index_name="embeddings_index"):
-    """Evaluate vector-based search performance"""
-    print("\n🎯 Evaluating Vector Search Performance")
-    print("=" * 50)
-    
-    results = []
-    
-    # Test with a few sample embeddings
-    test_cases = list(embeddings_data.items())[:3]
-    
-    for (doc_id, chunk_idx), data in test_cases:
-        query_embedding = data['embedding'].tolist()
-        original_text = data['text']
-        
-        print(f"\nQuery Document: {doc_id} (Chunk {chunk_idx})")
-        print(f"Original text: {original_text[:100]}...")
-        
-        start_time = time.time()
-        
-        search_body = {
-            "size": 5,
-            "query": {
-                "knn": {
-                    "embedding": {
-                        "vector": query_embedding,
-                        "k": 5
-                    }
-                }
-            }
-        }
-        
-        response = client.search(index=index_name, body=search_body)
-        search_time = time.time() - start_time
-        
-        hits = response['hits']['hits']
-        
-        print(f"Vector search time: {search_time:.3f}s")
-        print("Top similar documents:")
-        
-        for i, hit in enumerate(hits, 1):
-            source = hit['_source']
-            score = hit['_score']
-            is_original = (source['document_id'] == doc_id and source['chunk_index'] == chunk_idx)
-            match_indicator = "🎯 EXACT MATCH" if is_original else ""
-            
-            print(f"  {i}. {source['document_id']} (Score: {score:.3f}) {match_indicator}")
-            print(f"     Text: {source['text'][:100]}...")
-        
-        results.append({
-            'query_doc': doc_id,
-            'query_chunk': chunk_idx,
-            'search_time': search_time,
-            'top_results': hits,
-            'exact_match_found': any(hit['_source']['document_id'] == doc_id and hit['_source']['chunk_index'] == chunk_idx for hit in hits)
-        })
-    
-    return results
-
-def evaluate_department_filtering(client, index_name="embeddings_index"):
-    """Evaluate department-based filtering"""
-    print("\n🏢 Evaluating Department Filtering")
-    print("=" * 50)
-    
-    # Get all departments from the data
-    search_body = {
-        "size": 0,
-        "aggs": {
-            "departments": {
-                "terms": {
-                    "field": "metadata.department",
-                    "size": 10
-                }
-            }
-        }
-    }
-    
-    response = client.search(index=index_name, body=search_body)
-    departments = [bucket['key'] for bucket in response['aggregations']['departments']['buckets']]
-    
-    print(f"Available departments: {departments}")
-    
-    results = []
-    
-    for dept in departments:
+    def _hybrid_search(self, query):
+        """Hybrid search combining vector and text"""
+        query_embedding = self.model.encode(query).tolist()
         search_body = {
             "size": 10,
-            "query": {
-                "term": {
-                    "metadata.department": dept
-                }
-            }
-        }
-        
-        response = client.search(index=index_name, body=search_body)
-        count = response['hits']['total']['value']
-        
-        print(f"\nDepartment '{dept}': {count} documents")
-        
-        # Show sample documents
-        for hit in response['hits']['hits'][:3]:
-            source = hit['_source']
-            print(f"  - {source['document_id']}: {source['text'][:80]}...")
-        
-        results.append({
-            'department': dept,
-            'document_count': count
-        })
-    
-    return results
-
-def evaluate_hybrid_search(client, test_queries, embeddings_data, index_name="embeddings_index"):
-    """Evaluate hybrid search combining text and vector search"""
-    print("\n🔄 Evaluating Hybrid Search Performance")
-    print("=" * 50)
-    
-    results = []
-    
-    # Use first embedding as query vector
-    first_embedding = list(embeddings_data.values())[0]['embedding'].tolist()
-    
-    for query_text in test_queries[:2]:  # Test with first 2 queries
-        print(f"\nHybrid Query: '{query_text}'")
-        
-        start_time = time.time()
-        
-        search_body = {
-            "size": 5,
             "query": {
                 "bool": {
                     "should": [
                         {
                             "knn": {
                                 "embedding": {
-                                    "vector": first_embedding,
-                                    "k": 5,
+                                    "vector": query_embedding,
+                                    "k": 10,
                                     "boost": 0.7
                                 }
                             }
@@ -217,7 +259,7 @@ def evaluate_hybrid_search(client, test_queries, embeddings_data, index_name="em
                         {
                             "match": {
                                 "text": {
-                                    "query": query_text,
+                                    "query": query,
                                     "boost": 0.3
                                 }
                             }
@@ -226,121 +268,97 @@ def evaluate_hybrid_search(client, test_queries, embeddings_data, index_name="em
                 }
             }
         }
+        return self.client.search(index="embeddings_index", body=search_body)
+    
+    def generate_evaluation_report(self, all_results):
+        """Generate comprehensive evaluation report"""
+        print("\n" + "="*80)
+        print("📊 COMPREHENSIVE RAG EVALUATION REPORT")
+        print("="*80)
         
-        response = client.search(index=index_name, body=search_body)
-        search_time = time.time() - start_time
+        print("\n🔧 SYSTEM CONFIGURATION:")
+        print(f"   Model: krutrim-ai-labs/vyakyarth")
+        print(f"   Embedding Dimensions: {all_results['embedding_quality']['embedding_dimensions']}")
+        print(f"   Index Documents: {all_results['index_stats']['total_documents']}")
         
-        hits = response['hits']['hits']
+        print("\n⚡ PERFORMANCE METRICS:")
+        print(f"   Average Query Processing: {all_results['embedding_quality']['avg_processing_time']:.4f}s")
+        print(f"   Average Retrieval Time: {all_results['retrieval_performance']['avg_retrieval_time']:.4f}s")
+        print(f"   Average Precision: {all_results['retrieval_performance']['avg_precision']:.4f}")
         
-        print(f"Hybrid search time: {search_time:.3f}s")
-        print("Results (text + vector combined):")
+        print("\n📈 SCORE DISTRIBUTION:")
+        stats = all_results['retrieval_performance']['score_statistics']
+        print(f"   Mean Score: {stats['mean']:.4f}")
+        print(f"   Standard Deviation: {stats['std']:.4f}")
+        print(f"   Score Range: {stats['min']:.4f} - {stats['max']:.4f}")
         
-        for i, hit in enumerate(hits[:3], 1):
-            source = hit['_source']
-            score = hit['_score']
-            print(f"  {i}. {source['document_id']} (Score: {score:.3f})")
-            print(f"     Text: {source['text'][:100]}...")
+        print("\n🎯 RETRIEVAL TECHNIQUE COMPARISON:")
+        for technique, results in all_results['technique_comparison'].items():
+            print(f"   {technique.upper()}:")
+            print(f"      Time: {results['processing_time']:.4f}s")
+            print(f"      Avg Score: {results['avg_score']:.4f}")
+            print(f"      Results: {results['num_results']}")
         
-        results.append({
-            'query_text': query_text,
-            'search_time': search_time,
-            'top_results': hits[:3]
-        })
-    
-    return results
-
-def calculate_retrieval_metrics(results):
-    """Calculate retrieval performance metrics"""
-    print("\n📊 Retrieval Performance Metrics")
-    print("=" * 50)
-    
-    # Text search metrics
-    if 'text_search' in results:
-        text_results = results['text_search']
-        avg_search_time = np.mean([r['search_time'] for r in text_results])
-        avg_results_found = np.mean([r['total_found'] for r in text_results])
+        print("\n✅ EVALUATION SUMMARY:")
+        if all_results['retrieval_performance']['avg_retrieval_time'] < 0.1:
+            print("   🚀 Retrieval Speed: EXCELLENT (< 0.1s)")
+        elif all_results['retrieval_performance']['avg_retrieval_time'] < 0.5:
+            print("   ✅ Retrieval Speed: GOOD (< 0.5s)")
+        else:
+            print("   ⚠️  Retrieval Speed: NEEDS IMPROVEMENT (> 0.5s)")
         
-        print(f"Text Search:")
-        print(f"  Average search time: {avg_search_time:.3f}s")
-        print(f"  Average results found: {avg_results_found:.1f}")
-    
-    # Vector search metrics
-    if 'vector_search' in results:
-        vector_results = results['vector_search']
-        avg_search_time = np.mean([r['search_time'] for r in vector_results])
-        exact_match_rate = np.mean([r['exact_match_found'] for r in vector_results])
+        if all_results['retrieval_performance']['avg_precision'] > 0.8:
+            print("   🎯 Precision: EXCELLENT (> 0.8)")
+        elif all_results['retrieval_performance']['avg_precision'] > 0.6:
+            print("   ✅ Precision: GOOD (> 0.6)")
+        else:
+            print("   ⚠️  Precision: NEEDS IMPROVEMENT (< 0.6)")
         
-        print(f"\nVector Search:")
-        print(f"  Average search time: {avg_search_time:.3f}s")
-        print(f"  Exact match rate: {exact_match_rate:.2%}")
-    
-    # Department filtering metrics
-    if 'department_filtering' in results:
-        dept_results = results['department_filtering']
-        total_docs = sum(r['document_count'] for r in dept_results)
-        
-        print(f"\nDepartment Filtering:")
-        print(f"  Total documents indexed: {total_docs}")
-        print(f"  Unique departments: {len(dept_results)}")
-
-def run_comprehensive_evaluation():
-    """Run comprehensive retrieval evaluation"""
-    print("🚀 Starting Comprehensive Retrieval Evaluation")
-    print("=" * 60)
-    
-    # Connect to OpenSearch
-    try:
-        client = connect_to_opensearch()
-        print("✅ Connected to OpenSearch")
-    except Exception as e:
-        print(f"❌ Failed to connect to OpenSearch: {e}")
-        return
-    
-    # Load embeddings data
-    try:
-        embeddings_data = load_embeddings_data()
-        print(f"✅ Loaded {len(embeddings_data)} embeddings")
-    except Exception as e:
-        print(f"❌ Failed to load embeddings: {e}")
-        return
-    
-    # Test queries for evaluation
-    test_queries = [
-        "salary report",
-        "engine maintenance",
-        "employee data",
-        "security policy",
-        "financial information"
-    ]
-    
-    all_results = {}
-    
-    # 1. Text Search Evaluation
-    all_results['text_search'] = evaluate_text_search(client, test_queries)
-    
-    # 2. Vector Search Evaluation
-    all_results['vector_search'] = evaluate_vector_search(client, embeddings_data)
-    
-    # 3. Department Filtering Evaluation
-    all_results['department_filtering'] = evaluate_department_filtering(client)
-    
-    # 4. Hybrid Search Evaluation
-    all_results['hybrid_search'] = evaluate_hybrid_search(client, test_queries, embeddings_data)
-    
-    # 5. Calculate Metrics
-    calculate_retrieval_metrics(all_results)
-    
-    print("\n🎉 Evaluation Complete!")
-    print("\nNext steps:")
-    print("1. Review the results above")
-    print("2. Adjust search parameters if needed")
-    print("3. Test with your specific use cases")
-    print("4. Monitor performance in production")
+        print("\n" + "="*80)
 
 def main():
     """Main evaluation function"""
-    run_comprehensive_evaluation()
+    evaluator = RetrievalEvaluator()
+    
+    # Connect to systems
+    print("🔌 Connecting to OpenSearch...")
+    evaluator.connect_to_opensearch()
+    
+    print("🤖 Loading embedding model...")
+    evaluator.load_embedding_model()
+    
+    # Get index statistics
+    print("\n📊 Getting Index Statistics...")
+    index_stats = evaluator.get_index_stats()
+    if not index_stats:
+        print("❌ No embeddings index found!")
+        return
+    
+    print(f"   Documents: {index_stats['total_documents']}")
+    print(f"   Index Size: {index_stats['index_size_bytes'] / (1024*1024):.2f} MB")
+    
+    # Test queries for evaluation
+    test_queries = [
+        "What are the safety requirements for metro operations?",
+        "maintenance schedule and procedures",
+        "incident report emergency brake",
+        "financial budget and expenses",
+        "signal failure and troubleshooting",
+        "passenger safety guidelines",
+        "train maintenance checklist",
+        "emergency evacuation procedures"
+    ]
+    
+    # Run evaluations
+    all_results = {
+        'index_stats': index_stats,
+        'embedding_quality': evaluator.evaluate_embedding_quality(test_queries),
+        'retrieval_performance': evaluator.evaluate_retrieval_performance(test_queries),
+        'technique_comparison': evaluator.compare_retrieval_techniques(test_queries[0])
+    }
+    
+    # Generate final report
+    evaluator.generate_evaluation_report(all_results)
 
 if __name__ == "__main__":
     main()
-

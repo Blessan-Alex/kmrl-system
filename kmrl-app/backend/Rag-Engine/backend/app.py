@@ -61,8 +61,8 @@ def generate_embedding(query: str) -> List[float]:
         logging.error(f"Embedding generation failed: {e}")
         raise
 
-def search_similar_documents(query: str, top_k: int = 5, department: str = None) -> List[Dict[str, Any]]:
-    """Search for similar documents using OpenSearch"""
+def search_similar_documents(query: str, top_k: int = 5, department: str = None, search_type: str = "hybrid") -> List[Dict[str, Any]]:
+    """Search for similar documents using improved search methods"""
     try:
         if not opensearch_processor:
             raise Exception("OpenSearch not initialized")
@@ -70,12 +70,28 @@ def search_similar_documents(query: str, top_k: int = 5, department: str = None)
         # Generate query embedding
         query_embedding = generate_embedding(query)
         
-        # Search OpenSearch
-        results = opensearch_processor.search_by_embedding(
-            query_embedding, 
-            size=top_k, 
-            department=department
-        )
+        if search_type == "hybrid":
+            # Use hybrid search (vector + text)
+            results = opensearch_processor.hybrid_search(
+                query, 
+                query_embedding, 
+                size=top_k, 
+                department=department
+            )
+        elif search_type == "vector":
+            # Use improved vector search with normalization
+            results = opensearch_processor.improved_vector_search(
+                query_embedding, 
+                size=top_k, 
+                department=department
+            )
+        else:
+            # Fallback to original search
+            results = opensearch_processor.search_by_embedding(
+                query_embedding, 
+                size=top_k, 
+                department=department
+            )
         
         return results
     except Exception as e:
@@ -141,15 +157,16 @@ def process_query():
         query = data.get('query', '').strip()
         department = data.get('department', None)
         top_k = data.get('top_k', 5)
+        search_type = data.get('search_type', 'hybrid')  # Default to hybrid search
         
         if not query:
             return jsonify({'error': 'Query cannot be empty'}), 400
         
         start_time = time.time()
         
-        # Step 1: Search for similar documents
-        logging.info(f"Searching for documents related to: '{query}'")
-        similar_docs = search_similar_documents(query, top_k, department)
+        # Step 1: Search for similar documents using improved search
+        logging.info(f"Searching for documents related to: '{query}' using {search_type} search")
+        similar_docs = search_similar_documents(query, top_k, department, search_type)
         
         if not similar_docs:
             return jsonify({
@@ -170,6 +187,7 @@ def process_query():
         response_data = {
             'query': query,
             'response': summary,
+            'search_type': search_type,
             'context_documents': [
                 {
                     'document_id': doc.get('document_id', 'Unknown'),

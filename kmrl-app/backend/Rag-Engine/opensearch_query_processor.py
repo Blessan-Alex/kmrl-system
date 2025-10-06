@@ -6,6 +6,7 @@ from typing import List, Dict, Any, Optional
 from opensearchpy import OpenSearch
 from query_to_embedding import query_to_embedding
 import json
+import numpy as np
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
@@ -275,6 +276,161 @@ class OpenSearchQueryProcessor:
         except Exception as e:
             logging.error(f"Failed to get departments: {e}")
             return []
+    
+    def normalize_scores(self, scores: List[float]) -> List[float]:
+        """Normalize similarity scores to 0-1 range"""
+        if not scores:
+            return scores
+        
+        min_score = min(scores)
+        max_score = max(scores)
+        
+        if max_score == min_score:
+            return [1.0] * len(scores)
+        
+        normalized = [(score - min_score) / (max_score - min_score) for score in scores]
+        return normalized
+    
+    def improved_vector_search(self, query_embedding: List[float], size: int = 5, department: Optional[str] = None, boost_factor: float = 1.0) -> List[Dict[str, Any]]:
+        """Improved vector search with score normalization"""
+        try:
+            # Build query with boost factor
+            search_body = {
+                "size": size,
+                "query": {
+                    "knn": {
+                        "embedding": {
+                            "vector": query_embedding,
+                            "k": size,
+                            "boost": boost_factor
+                        }
+                    }
+                },
+                "_source": ["document_id", "chunk_index", "text", "metadata", "file_path", "chunk_text"]
+            }
+            
+            # Add department filter if specified
+            if department:
+                search_body["query"] = {
+                    "bool": {
+                        "must": [
+                            {
+                                "knn": {
+                                    "embedding": {
+                                        "vector": query_embedding,
+                                        "k": size,
+                                        "boost": boost_factor
+                                    }
+                                }
+                            }
+                        ],
+                        "filter": [
+                            {"term": {"metadata.department": department}}
+                        ]
+                    }
+                }
+            
+            response = self.client.search(index=self.index_name, body=search_body)
+            
+            # Extract results
+            hits = response['hits']['hits']
+            results = []
+            
+            # Extract and normalize scores
+            scores = [hit['_score'] for hit in hits]
+            normalized_scores = self.normalize_scores(scores)
+            
+            for i, hit in enumerate(hits):
+                source = hit['_source']
+                result = {
+                    'document_id': source.get('document_id', 'Unknown'),
+                    'chunk_index': source.get('chunk_index', 0),
+                    'text': source.get('text', ''),
+                    'chunk_text': source.get('chunk_text', ''),
+                    'metadata': source.get('metadata', {}),
+                    'file_path': source.get('file_path', ''),
+                    'similarity_score': normalized_scores[i],  # Use normalized score
+                    'original_score': scores[i]  # Keep original score for debugging
+                }
+                results.append(result)
+            
+            logging.info(f"Improved vector search returned {len(results)} results")
+            return results
+            
+        except Exception as e:
+            logging.error(f"Improved vector search failed: {e}")
+            return []
+    
+    def hybrid_search(self, query_text: str, query_embedding: List[float], size: int = 5, department: Optional[str] = None, vector_weight: float = 0.7, text_weight: float = 0.3) -> List[Dict[str, Any]]:
+        """Hybrid search combining vector and text search"""
+        try:
+            # Build hybrid query
+            search_body = {
+                "size": size,
+                "query": {
+                    "bool": {
+                        "should": [
+                            {
+                                "knn": {
+                                    "embedding": {
+                                        "vector": query_embedding,
+                                        "k": size,
+                                        "boost": vector_weight
+                                    }
+                                }
+                            },
+                            {
+                                "multi_match": {
+                                    "query": query_text,
+                                    "fields": ["text^2", "chunk_text^1.5", "metadata.department^0.5"],
+                                    "type": "best_fields",
+                                    "fuzziness": "AUTO",
+                                    "boost": text_weight
+                                }
+                            }
+                        ],
+                        "minimum_should_match": 1
+                    }
+                },
+                "_source": ["document_id", "chunk_index", "text", "metadata", "file_path", "chunk_text"]
+            }
+            
+            # Add department filter if specified
+            if department:
+                search_body["query"]["bool"]["filter"] = [
+                    {"term": {"metadata.department": department}}
+                ]
+            
+            response = self.client.search(index=self.index_name, body=search_body)
+            
+            # Extract results
+            hits = response['hits']['hits']
+            results = []
+            
+            # Extract and normalize scores
+            scores = [hit['_score'] for hit in hits]
+            normalized_scores = self.normalize_scores(scores)
+            
+            for i, hit in enumerate(hits):
+                source = hit['_source']
+                result = {
+                    'document_id': source.get('document_id', 'Unknown'),
+                    'chunk_index': source.get('chunk_index', 0),
+                    'text': source.get('text', ''),
+                    'chunk_text': source.get('chunk_text', ''),
+                    'metadata': source.get('metadata', {}),
+                    'file_path': source.get('file_path', ''),
+                    'similarity_score': normalized_scores[i],  # Use normalized score
+                    'original_score': scores[i]  # Keep original score for debugging
+                }
+                results.append(result)
+            
+            logging.info(f"Hybrid search returned {len(results)} results")
+            return results
+            
+        except Exception as e:
+            logging.error(f"Hybrid search failed: {e}")
+            return []
 
 
 def main():
@@ -376,10 +532,10 @@ def display_results(results: List[Dict[str, Any]], search_type: str):
     
     for i, result in enumerate(results, 1):
         print(f"{i}. Document: {result['document_id']} (Chunk {result['chunk_index']})")
-        print(f"   Score: {result['similarity_score']:.4f}")
-        print(f"   Department: {result['metadata'].get('department', 'Unknown')}")
-        print(f"   Text: {result['text'][:150]}...")
-        print("-" * 50)
+    print(f"   Score: {result['similarity_score']:.4f}")
+    print(f"   Department: {result['metadata'].get('department', 'Unknown')}")
+    print(f"   Text: {result['text'][:150]}...")
+    print("-" * 50)
 
 
 if __name__ == "__main__":

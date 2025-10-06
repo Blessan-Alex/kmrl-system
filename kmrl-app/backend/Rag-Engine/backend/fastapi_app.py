@@ -67,6 +67,7 @@ class QueryRequest(BaseModel):
 class QueryResponse(BaseModel):
     query: str
     response: str
+    search_type: str
     context_documents: List[Dict[str, Any]]
     search_time: float
     total_documents_searched: int
@@ -107,8 +108,8 @@ async def generate_embedding_async(query: str) -> List[float]:
     loop = asyncio.get_event_loop()
     return await loop.run_in_executor(executor, query_to_embedding, query)
 
-async def search_documents_async(query: str, top_k: int = 5, department: str = None) -> List[Dict[str, Any]]:
-    """Search documents asynchronously"""
+async def search_documents_async(query: str, top_k: int = 5, department: str = None, search_type: str = "hybrid") -> List[Dict[str, Any]]:
+    """Search documents asynchronously using improved search methods"""
     if not opensearch_processor:
         raise HTTPException(status_code=503, detail="OpenSearch not available")
     
@@ -116,12 +117,27 @@ async def search_documents_async(query: str, top_k: int = 5, department: str = N
         # Generate query embedding
         query_embedding = await generate_embedding_async(query)
         
-        # Search OpenSearch
-        results = opensearch_processor.search_by_embedding(
-            query_embedding, 
-            size=top_k, 
-            department=department
-        )
+        # Use improved search methods
+        if search_type == "hybrid":
+            results = opensearch_processor.hybrid_search(
+                query, 
+                query_embedding, 
+                size=top_k, 
+                department=department
+            )
+        elif search_type == "vector":
+            results = opensearch_processor.improved_vector_search(
+                query_embedding, 
+                size=top_k, 
+                department=department
+            )
+        else:
+            # Fallback to original search
+            results = opensearch_processor.search_by_embedding(
+                query_embedding, 
+                size=top_k, 
+                department=department
+            )
         
         return results
     except Exception as e:
@@ -218,12 +234,13 @@ async def process_query(request: QueryRequest):
     try:
         start_time = time.time()
         
-        # Step 1: Search for similar documents
-        logging.info(f"Searching for documents related to: '{request.query}'")
+        # Step 1: Search for similar documents using improved search
+        logging.info(f"Searching for documents related to: '{request.query}' using {request.search_type} search")
         similar_docs = await search_documents_async(
             request.query, 
             request.top_k, 
-            request.department
+            request.department,
+            request.search_type
         )
         
         if not similar_docs:
@@ -259,6 +276,7 @@ async def process_query(request: QueryRequest):
         return QueryResponse(
             query=request.query,
             response=summary,
+            search_type=request.search_type,
             context_documents=context_docs,
             search_time=total_time,
             total_documents_searched=len(similar_docs),
