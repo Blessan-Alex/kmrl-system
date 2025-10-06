@@ -523,8 +523,9 @@ migrations/*.sql
 *.svg
 *.ico
 
-# Allow specific project diagram
+# Allow specific project diagrams
 !kmrl-app/assets/diagram-export-10-4-2025-1_23_51-PM.png
+!kmrl-app/assets/Workflow.png
 
 # Specific to your project
 kmrl-app/backend/storage/
